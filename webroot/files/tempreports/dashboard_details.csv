@@ -1,0 +1,32 @@
+"No. of Vendors by Subscription Package 
+"
+"Subscription Package",
+SMB,2
+Enterprise,0
+Mid-Market,0
+"Expiring vendor subscriptions (next 90 days) 
+"
+"No expiring vendors"
+"
+ Subscription Packages 
+"
+Title,"Subscribers (all)","Annualised Income (all)","Subscribers (new this month)","Annualised Income (this month's new subscribers)"
+Enterprise,0,0,0,0
+Mid-Market,0,0,0,0
+SMB,1,17400,0,0
+"
+ Vendor Locations 
+"
+Country,County/State,Vendors,Campaigns,"Closed Deals","Annualised Revenue"
+Philippines,Philippines,2,0,0,17400
+"
+ Campaigns 
+"
+"Financial Year","No. Campaigns","Closed Deals"
+Current,0,0
+Previous,0,0
+"
+ Income, by country 
+"
+Country,"Income (all packages)"
+Philippines,17400

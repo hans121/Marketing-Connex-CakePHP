@@ -1,0 +1,1 @@
+<?php echo $this->element('bplan-ajax-list'); ?>

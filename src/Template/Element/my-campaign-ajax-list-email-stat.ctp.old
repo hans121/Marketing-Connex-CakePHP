@@ -1,0 +1,45 @@
+<div class="col-sm-12">
+	<div class="well">
+		<h2 class="text-center">Email Statistics</h2>
+		<div class="row charts">
+			<div class="col-sm-7 col-xs-12">
+				<div class="row">
+					<div class="col-sm-4 col-sm-offset-2 col-xs-6">
+						<div class="canvas-holder">
+							<canvas id="chart-area" width="500" height="500"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-5 col-sm-offset-0 col-xs-offset-6 col-xs-5">
+				<ul class="email-stats">
+					<li><span><?=$this->Number->toPercentage($campstatics['openperc']);?></span><?=' '.'of all recipients opened so far'?></li>
+					<li><span><?=$this->Number->toPercentage($campstatics['clickperc']);?></span><?=' '.'clicked a link'.' ('?>
+					<?php 
+					if($campstatics['click'] ==1){ 
+						echo $campstatics['click'].' '.__('person');
+					} else {
+						echo $campstatics['click'].' '.__('people');
+					}
+					?>
+					<?=')'?></li>
+					<li><span><?=$this->Number->toPercentage($campstatics['unsubperc']);?></span><?=' '.'unsubscribed'.' ('?>
+						<?php 
+						if($campstatics['unsubscribe'] ==1){ 
+							echo $campstatics['unsubscribe'].' '.__('person');
+						} else {
+							echo $campstatics['unsubscribe'].' '.__('people');
+						}
+						?>
+						<?=')'?></li>
+
+				</ul>
+			</div>
+
+		</div>
+
+		<!-- <h4><?= __('The maximum send allowed is:').  $campaigndetails->send_limit?></h4> -->
+
+	</div>
+</div>

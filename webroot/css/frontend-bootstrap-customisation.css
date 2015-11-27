@@ -1,0 +1,607 @@
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+body {
+	background: #F4F4F4;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+}
+
+
+/* TYPOGRAPHY, HEADINGS ETC */
+
+a,
+a:visited {
+  color: #00688E;
+}
+a:hover,
+a:focus {
+  color: #000000;
+}
+h1, h3, h5 {
+	color: #111111;
+	font-size: 46px;
+}
+h2, h4 {
+	color: #666666;
+	font-size: 26px;
+	font-weight: 300;
+	margin-bottom: 40px;
+}
+h3 {
+	font-size: 28px;
+}
+h4 {
+	font-size: 20px;
+}
+.split-col h4 {
+	margin: 10px 0;
+}
+h5 {
+	font-size: 20px;
+}
+.split-col h5 {
+	color: #666666;
+	font-size: 18px;
+	font-weight: 300;
+	margin-top: 0;
+}
+footer h6 {
+	text-align: left;
+}
+footer li > h6 a {
+	color: #ffffff;
+	font-weight: bold;
+}
+footer li > h6 a:hover,
+footer li > h6 a:focus {
+	color: #ffffff;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+	font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+p {
+	color: #666666;
+	font-weight: 300;
+}
+.split-col p {
+	font-size: 12px;
+}
+p.blog-links {
+	margin-bottom: 40px;
+}
+i {
+	color: #00688C;
+}
+.btn {
+	min-width: 160px;
+}
+.btn-primary {
+  color: #ffffff;
+  background-color: #FFA700;
+  border-color: #FFA700;
+}
+.btn-primary:visited {
+	color: #ffffff;
+}
+.btn-xlg {
+	margin: 10px 0 20px;
+  padding: 10px 65px;
+  font-size: 20px;
+  line-height: 1.33;
+  border-radius: 6px;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+  color: #ffffff;
+  background-color: #00688C;
+  border-color: #00688C;
+}
+.row.base {
+	padding: 0 15px 40px;
+}
+.row.white {
+	padding: 40px 15px;
+	background: #ffffff url(../img/frontend/bg_pagebreak.png) no-repeat center top;
+}
+.row.grey {
+	padding: 40px 15px;
+	background: #eeeeee url(../img/frontend/bg_pagebreak.png) no-repeat center top;
+}
+img {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+}
+.split-col img {
+	margin-bottom: 30px;
+}
+
+
+/* CUSTOM SELECT BOX STYLING
+   Credit: http://www.scribbletribe.com/how-to-style-the-select-dropdown/
+-------------------------------------------------- */
+
+.dropcontainer {
+	position: relative;
+	font-size: 14px;
+	color: #777;
+}
+.trigger {
+	color: #777;
+	padding: 9px 12px;
+	font-size: 14px;
+	width: 100%;
+	max-width: 100%; 
+	background: #ffffff url(../img/frontend/img_select-arrow-open.png) 98% center no-repeat;
+	display: block;
+	border: 1px solid #ccc;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.trigger:active,
+.trigger:focus,
+.trigger:hover {
+	color: #777;
+	background: #f5f5f5 url(../img/frontend/img_select-arrow-open.png) 98% center no-repeat;
+	border: 1px solid #ccc !important;
+}
+.activetrigger {
+	color: #777;
+	padding: 9px 12px;
+	font-size: 14px;
+	width: 100%;
+	max-width: 100%;
+	background: #f5f5f5 url(../img/frontend/img_select-arrow-close.png) 98% center no-repeat;
+	display: block;
+	border: 1px solid #ccc;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.activetrigger:hover {
+	background: #f5f5f5 url(../img/frontend/img_select-arrow-close.png) 98% center no-repeat;
+	color: #777;
+}
+.activetrigger:active {
+	background: #f5f5f5 url(../img/frontend/img_select-arrow-close.png) 98% center no-repeat;
+	color: #777;
+}
+.dropcontainer ul {
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-top: none;
+	background: #fff;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	max-width: 100%;
+	z-index: 100;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.dropcontainer ul li {
+	padding: 10px;
+}
+.dropcontainer ul li:hover {
+	background: #f5f5f5;
+	outline: none;
+}
+.dropcontainer ul li:first-child {
+	display: none;
+}
+.dropcontainer ul li:last-child {
+	border-bottom: none;
+}
+.dropdownhidden {
+	display: none;
+}
+.dropdownvisible {
+	height: auto;
+}
+
+
+/*  FORM ELEMENTS */
+
+label {
+  margin-bottom: 5px;
+  font-weight: 300;
+  color: #666666;
+  font-size: 11px;
+}
+
+::-webkit-input-placeholder {
+	color: #999999;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+	color: #999999;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+	color: #999999;
+	font-weight: 300;
+  font-size: 14px;
+}
+
+:-ms-input-placeholder {  
+	color: #999999;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.form-control {
+  height: 40px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+          transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.form-group {
+	margin-bottom: 5px;
+}
+
+
+/* HEADER AND NAV */
+
+#top {
+	background: url(../img/frontend/bg_top.png) no-repeat center bottom;
+}
+
+#header .row {
+	background: #000000;
+}
+
+.navbar-brand {
+  text-indent: -9999px;
+  background: url(http://placehold.it/100x25) no-repeat center center;
+  width: 100px;
+  height: 25px;
+  margin: 10px 30px;
+}
+
+.navbar-collapse {
+	position: relative;
+}
+
+.navbar-nav {
+  margin: 0 -15px;
+}
+
+.navbar-nav.primary,
+.navbar-nav.secondary {
+	background: #FFAB00;
+}
+
+.nav.navbar-nav.secondary a.btn-primary {
+  color: #ffffff;
+  background-color: #00688C;
+  border-color: #00688C;
+}
+
+.navbar-nav.secondary a.btn {
+	text-align: left;
+}
+
+.nav > li > a {
+	padding: 10px 20px;
+}
+
+.navbar-nav a {
+  color: #00688C;
+}
+.navbar-nav.secondary a {
+	color: #ffffff;
+}
+
+.navbar-nav a:hover,
+.navbar-nav a:focus {
+  color: #ffffff;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+	background: #00688C;
+	color: #ffffff;
+}
+
+.navbar-toggle {
+  border: none;
+  border-radius: 0;
+}
+
+.icon-bar {
+	background: #FFAB00;
+}
+
+
+/* PAGE */
+
+#content .container {
+	background: #eeeeee;
+}
+
+
+/* BREADCRUMBS */
+
+.breadcrumb .container {
+	height: 40px;
+}
+.breadcrumb {
+  padding: 10px 20px;
+  margin-bottom: 0;
+  background: #eeeeee url(../img/frontend/bg_pagebreak.png) no-repeat center top;
+  border-radius: 0;
+  line-height: 20px;
+  font-weight: 300;
+  font-size: 12px;
+  width: 100%;
+}
+
+
+/*  TABLES  */
+
+.table-responsive {
+	padding-top: 50px;
+	background: url(../img/frontend/img_table-scroll-left.png) no-repeat left top, url(../img/frontend/img_table-scroll-right.png) no-repeat right top;
+	border: none;
+}
+
+.table-responsive .table {
+	margin-top: 0;
+}
+
+.table {
+	margin: 50px 0;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+	border: none;
+	border-right: 1px solid #eeeeee;
+}
+
+.table td,
+.table th {
+	border-right: 1px solid #eeeeee;
+}
+
+.table tbody td,
+.table tbody th {
+	background: #ffffff;
+}
+
+.table td {
+	text-align: center;
+}
+
+thead th {
+	background: #00688C;
+	color: #ffffff;
+}
+thead h3,
+thead h4 small,
+thead h4,
+thead p {
+	color: #ffffff;
+}
+
+thead h4 {
+	font-size: 30px;
+}
+
+thead h3 {
+	font-size: 18px;
+	margin-top: 10px;
+}
+
+thead h4 small {
+	display: block;
+	font-size: 12px;
+	font-weight: 300;
+}
+
+thead p {
+	font-weight: 300;
+}
+
+thead .price {
+	font-weight: 400;
+	font-size: 20px;
+}
+
+tbody th {
+	color: #00668D;
+	font-weight: 300;
+	font-size: 16px;
+}
+
+tbody td {
+	font-size: 18px;
+	color: #666666;
+}
+
+tbody td .small {
+	font-size: 65%;
+}
+
+tbody td .btn {
+	font-size: 16px;
+	min-width: 0;
+}
+
+
+/* FOOTER */
+
+.footer-container {
+	background: url(../img/frontend/bg_footer.png) no-repeat center top;
+}
+
+.footer-container .row {
+	background: #FFA32F;
+	padding-top: 20px;
+	padding-bottom: 40px;
+}
+
+.footer-brand {
+	display: block;
+	width: 200px;
+	height: 50px;
+  text-indent: -9999px;
+  background: url(http://placehold.it/200x50) no-repeat center center;
+  margin: 10px 0;
+}
+
+footer ul {
+	list-style-type: none;
+}
+
+footer li > a {
+	color: #ffffff;
+	font-size: 12px;
+	font-weight: 300;
+}
+
+footer li > a:hover,
+footer li > a:focus {
+	color: #FFA32F;
+}
+
+.copyright-container .row {
+	background: #FFBA4A;
+	font-size: 12px;
+	color: #ffffff;
+	height: 40px;
+	padding: 10px 15px;
+}
+
+.copyright-container a,
+.copyright-container p {
+	color: #ffffff;
+	line-height: 20px;
+}
+
+
+
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	
+	
+	#header .row {
+		background: #FFAB00;
+		height: 195px;
+	}
+	
+	.navbar-nav {
+	  margin: 0;
+	}
+	
+	.navbar-nav.primary {
+		position: absolute;
+		top: 155px;
+		left: 0;
+		width: 100%;
+		background: #FFFFFF;
+	}
+
+	.navbar-nav.secondary {
+		float: right;
+		background: none;
+	}
+	
+	.nav.secondary > li > a {
+		margin-top: 10px;
+		padding: 5px 20px;
+		min-width: 0;
+	}
+	
+	.nav.secondary > li > a:hover.btn,
+	.nav.secondary > li > a:focus.btn {
+		margin-top: 10px;
+		padding: 5px 20px;
+		background: #00688C;
+		text-decoration: none;
+	}
+	
+	.nav.secondary > li > a:hover,
+	.nav.secondary > li > a:focus {
+		background: none;
+		text-decoration: underline;
+	}
+
+	.navbar-brand {
+	  text-indent: -9999px;
+	  background: url(http://placehold.it/300x75) no-repeat center center;
+	  width: 300px;
+	  height: 75px;
+	  margin: 40px 30px;
+	}
+	
+	.table-responsive {
+		background: none;
+	}
+	
+	.footer-brand {
+		display: block;
+		width: 200px;
+		height: 50px;
+	  text-indent: -9999px;
+	  background: url(http://placehold.it/200x50) no-repeat center center;
+	  margin: 10px 15px;
+	}
+	
+	
+}
+
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	
+	
+	
+}
+
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	
+	
+	
+}
+

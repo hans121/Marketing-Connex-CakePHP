@@ -1,0 +1,54 @@
+<!-- parter performance -->
+
+
+
+<?php 
+$this->layout = 'admin--ui';
+?>
+<!-- Card -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card--header">
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="card--icon">
+                                <div class="section__circle-container__circle mdl-color--primary"></div>
+                            </div>
+                            <div class="card--info">
+                                <h2 class="card--title"><?= __('Top 5 deals'); ?></h2>
+                                <h3 class="card--subtitle">Card SubTitle</h3>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="card--actions">
+                            </div>
+                        </div>
+                    </div>   
+                </div>
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Campaign Options</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            </p>
+                            <hr>
+                        </div>
+                    </div>
+                    <!-- content below this line -->
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /Card -->
+
+

@@ -1,0 +1,143 @@
+<div class="partnerGroups index">
+
+	<div class="index row table-title vendor-table-title">
+	
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<h2>
+				<?= __('Partner Groups'); ?>
+			</h2>
+			<div class="breadcrumbs">
+				<?php
+					$this->Html->addCrumb('Partners', ['controller' => 'vendors', 'action' => 'partners']);
+					$this->Html->addCrumb('Partner groups', ['controller' => 'PartnerGroups', 'action' => 'index']);
+					echo $this->Html->getCrumbs(' / ', [
+					    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+					    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+					    'escape' => false
+					]);
+				?>
+			</div>
+		</div>
+				
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?= $this->Html->link(__('Add new'), ['action' => 'add'], ['class'=>'pull-right btn btn-lg']); ?>
+		</div>
+				
+	</div> <!--row-table-title-->
+	
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+  
+	<!-- Are there any groups? -->
+	<?php
+		if(count($partnerGroups)>0)
+		{
+	?>
+	
+	<div class="row table-th hidden-xs">	
+		<div class="clearfix"></div>	
+
+		
+		<div class="col-xs-8">
+			<?= $this->Paginator->sort('name'); ?>
+		</div>
+		
+		<div class="col-xs-4">
+
+		</div>
+		
+	</div> <!--row-table-th-->
+		
+	<?php 
+     $j =0;
+        foreach ($partnerGroups as $partnerGroup): 
+        $j++;
+                ?>
+	<!-- Start loop -->
+		<div class="row inner hidden-xs">
+			
+			<div class="col-xs-8">
+				<?= h($partnerGroup->name); ?>
+			</div>
+			
+
+			<div class="col-xs-4">
+				<div class="btn-group pull-right">
+					<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $partnerGroup->id], ['confirm' => __('Are you sure you want to delete?', $partnerGroup->id),'class' => 'btn btn-danger pull-right']); ?>
+					<?= $this->Html->link(__('Edit'), ['action' => 'edit', $partnerGroup->id],['class' => 'btn pull-right']); ?>
+					<?= $this->Html->link(__('View'), ['action' => 'view', $partnerGroup->id],['class' => 'btn pull-right']); ?>
+
+				</div>
+			</div>	
+		</div> <!--row-->
+							
+		<div class="row inner visible-xs">
+		
+			<div class="col-xs-12 text-center">
+				
+				<a data-toggle="collapse" data-parent="#accordion" href="#basic<?= $j ?>">
+					<h3><?= h($partnerGroup->name); ?></h3>
+				</a>
+				
+			</div> <!--col-->
+				
+			<div id="basic<?= $j ?>" class="panel-collapse collapse">
+			
+				<div class="col-xs-12"><strong><?= __('ID:')?></strong> <?= $partnerGroup->id; ?></div>
+
+				<div class="col-xs-12"><strong><?= __('Vendor:')?></strong> <?= $this->Html->link($partnerGroup->vendor->company_name, ['controller' => 'Vendors', 'action' => 'view', $partnerGroup->vendor->id]); ?>
+</div>
+				<div class="col-xs-12"><strong><?= __('Name:')?></strong><?= h($partnerGroup->name); ?>
+</div>
+				
+				<div class="col-xs-12"><strong><?= __('Date Created:')?></strong> <?= h($partnerGroup->created_on); ?></div>
+				
+				<div class="col-xs-12"><strong><?= __('Date Modified:')?></strong> <?= h($partnerGroup->modified_on); ?></div>
+				
+				<div class="col-xs-12">
+					<div class="btn-group">
+					<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $partnerGroup->id], ['confirm' => __('Are you sure you want to delete # %s?', $partnerGroup->id),'class' => 
+					'btn btn-danger pull-right']); ?>
+					
+					<?= $this->Html->link(__('Edit'), ['action' => 'edit', $partnerGroup->id],['class' => 'btn pull-right']); ?>
+					
+					<?= $this->Html->link(__('View'), ['action' => 'view', $partnerGroup->id],['class' => 'btn pull-right']); ?>					
+					
+					</div><!--nested row-->
+					
+				</div> <!--col-xs-12-->
+							
+			</div> <!--collapseOne-->
+			
+		</div> <!--row-->
+			
+<?php
+  
+  endforeach;
+
+	} else {
+			
+	?>
+		
+	<div class="row inner withtop">
+			
+		<div class="col-sm-12 text-center">
+			<?=	 __('No Partner Groups found') ?>
+		</div>
+		
+	</div> <!--/.row.inner-->
+	
+	<?php
+	
+	}
+	
+?>
+
+	<?php echo $this->element('paginator'); ?>
+	
+	</div><!--row table-th-->
+	
+</div> <!-- index?-->
+
+
+
+

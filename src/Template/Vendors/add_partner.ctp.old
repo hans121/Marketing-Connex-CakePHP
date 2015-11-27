@@ -1,0 +1,138 @@
+<script>
+	function checkurl() {
+		var originalvalue = document.getElementById('websitefield').value;
+		var value = originalvalue.toLowerCase();
+		if (value && value.substr(0, 7) !== 'http://' && value.substr(0, 8) !== 'https://') {
+      // then prefix with http://
+      document.getElementById('websitefield').value = 'http://' + value;
+    }               
+	}
+</script>
+
+<div class="partnerManagers form col-centered col-lg-10 col-md-10 col-sm-10">
+  
+	<h2><?= __('New Partner')?></h2>
+	
+	<div class="breadcrumbs">
+		<?php
+			$this->Html->addCrumb('Partners', ['controller' => 'vendors', 'action' => 'partners']);
+			$this->Html->addCrumb('add', ['controller' => 'vendors', 'action' => 'addPartner']);
+			echo $this->Html->getCrumbs(' / ', [
+			    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+			    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+			    'escape' => false
+			]);
+		?>
+	</div>
+
+  <?= $this->Form->create($partner,['type'=>'file','class'=>'validatedForm','onsubmit'=>'checkurl()']); ?>
+  
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+    
+	<fieldset>
+  	
+  	<?php
+  		echo $this->Form->input('partner.vendor_id', ['value' => $vendor_id,'type'=> 'hidden']);
+  		echo $this->Form->input('partner.company_name');
+  	?>
+
+    <!-- Jasny Bootstrap input[type='file'] styling -->  
+		<label for="description">
+			<?= __('Upload partner logo').' '; ?>
+			<?php 
+				$max_file_size	= $this->CustomForm->fileUploadLimit();
+				$allowed = array('image/jpeg', 'image/png', 'image/gif', 'image/JPG', 'image/jpg', 'image/pjpeg');?>
+				<a class="popup" data-toggle="popover" data-content="<?= __('The maximum file upload size is').' '.($max_file_size).__('. Supported file types are jpg, jpeg, gif, & png only');?>">
+				<i class="fa fa-info-circle"></i></a>
+		</label>
+		<div class="row inner withtop">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+					  <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+					    <?php if(trim($partner->logo_url) != ''){ ?>	 
+								<?= $this->Html->image('logos/'.$partner->logo_url,['class'=>'img-responsive'])?>
+					    <?php } ?>
+					  </div>
+					  <div>
+					    <span class="btn btn-default btn-file">
+					    	<span class="fileinput-new">Select file</span>
+					    	<span class="fileinput-exists">Change</span>
+					    	<?php echo $this->Form->input('partner.logo_url',['type' =>'file','id' =>'logo_url', 'label'=>FALSE]); ?>
+					    </span>
+					    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+    <!-- Our previous input[type='file'] styling 
+		<div class="row table-th">	
+			<div class="col-lg-4 col-md-4 col-sm-4">
+				<?= __('Logo'); ?>
+        <?php $max_file_size	= $this->CustomForm->fileUploadLimit(); ?>
+				<?= __('<a class="popup" data-toggle="popover" data-content="The maximum file upload size is {0}. Supported file types are jpg, jpeg, gif, & png only',[($max_file_size)] )?>
+				<?= __('"><i class="fa fa-info-circle"></i></a>')?>
+			</div>		
+		</div>
+		
+		<div class="row inner">
+			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+		    <?php if(trim($partner->logo_url) != ''){ ?>	 
+		       
+					<a data-toggle="popover" data-html="true" data-content='<?= $this->Html->image('logos/'.$partner->logo_url)?>'>
+						<?= $this->Html->image('logos/'.$partner->logo_url)?>
+					</a>
+			    
+		    <?php } ?>
+			</div>
+			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+				<span class="file-wrapper ">
+				    <?php echo $this->Form->input('logo_url',['type' =>'file','id' =>'logo_url', 'label'=>FALSE]); ?>
+					<span class="btn pull-right button ">Change</span>
+				</span>
+			</div>	
+		</div>
+		-->
+		
+		<?php
+	    echo $this->Form->input('partner.address');
+	    echo $this->Form->input('partner.city');
+			echo $this->Form->input('partner.state');
+	    echo $this->Form->input('partner.country',['options' =>$country_list,'data-live-search' => true, 'empty' => 'Select a country']);
+			echo $this->Form->input('partner.postal_code',['label'=>'Zip / Post Code','maxLength'=>'10']);
+	    echo $this->Form->input('partner.email');
+			echo $this->Form->input('partner.phone');
+			echo $this->Form->input('partner.website',['type'=>'text', 'id'=>'websitefield']);
+			echo $this->Form->input('partner.twitter',['type'=>'text']);
+			echo $this->Form->input('partner.facebook',['type'=>'text']);
+			echo $this->Form->input('partner.linkedin',['type'=>'text']);
+		  echo $this->Form->input('partner_groups',['options' =>$partnergroups,'data-live-search' => true,'multiple'=>true]);
+			echo $this->Form->input('partner.vendor_manager_id',['options' =>$vmanagers,'data-live-search' => true]);
+		?>
+		
+	</fieldset>
+	
+  <fieldset>
+    
+    <h2><?= __('Primary Contact Details'); ?></h2>
+        
+    <?php
+  		echo $this->Form->input('user.password',['type' => 'hidden','value'=>time()]);
+  		echo $this->element('title-form');
+  		echo $this->Form->input('user.first_name');
+  		echo $this->Form->input('user.last_name');
+  		echo $this->Form->input('user.job_title');
+      echo $this->Form->hidden('primary_contact',['value' => 'Y']);
+      echo $this->Form->hidden('user.status',['value' => 'Y']);
+      echo $this->Form->hidden('user.role',['value' => 'partner']);
+      echo $this->Form->hidden('status',['value' => 'Y']);
+      echo $this->element('form-submit-bar');
+    ?>
+  </fieldset>
+  
+<?= $this->Form->end(); ?>
+
+</div>

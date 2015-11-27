@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Landing page example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+  <!-- Set up FontAwesome icons -->
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- Set up Google fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+  
+  <!-- Set up Custom Select box styling http://www.scribbletribe.com/how-to-style-the-select-dropdown/ -->
+  <script type='text/javascript' src='/js/select.js'></script>
+  <script type='text/javascript' src='/js/lp_scripts.js'></script>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-57286022-1', 'auto');
+	  ga('send', 'pageview');
+	
+	</script>	
+
+  <style type="text/css">
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+ {
+	background: #FFFFFF;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+}
+
+
+/* TYPOGRAPHY, HEADINGS ETC */
+
+  a {
+  color: #8C0000;
+}
+
+  a:hover,
+  a:focus {
+  color: #000000;
+}
+
+  h1,
+  h3,
+  h5 {
+	color: #00688C;
+	font-size: 26px;
+	text-transform: none;
+}
+
+  h2,
+  h4 {
+	color: #666666;
+	font-size: 26px;
+	font-weight: 300;
+	margin-bottom: 40px;
+}
+
+  h3 {
+	font-size: 28px;
+	color: #8C0000;
+}
+
+  h4 {
+	font-size: 20px;
+}
+
+  .split-col h4 {
+	margin: 10px 0;
+}
+
+  h5 {
+	font-size: 20px;
+}
+
+  .split-col h5 {
+	color: #666666;
+	font-size: 18px;
+	font-weight: 300;
+	margin-top: 0;
+}
+
+  footer h6 {
+	text-align: left;
+}
+
+  footer li > h6 a {
+	color: #FFA500;
+}
+
+  footer li > h6 a:hover,
+  footer li > h6 a:focus {
+	color: #ffffff;
+}
+
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6 {
+	font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+  p {
+	color: #666666;
+	font-weight: 300;
+}
+
+  .split-col p {
+	font-size: 12px;
+}
+
+  p.blog-links {
+	margin-bottom: 40px;
+}
+
+  i {
+	color: #00688C;
+}
+
+  .btn {
+	min-width: 160px;
+}
+
+  .btn-primary {
+  color: #ffffff;
+  background-color: #FFA700;
+  border-color: #FFA700;
+}
+
+  .btn-xlg {
+	margin: 10px 0 20px;
+  padding: 10px 65px;
+  font-size: 20px;
+  line-height: 1.33;
+  border-radius: 6px;
+}
+
+  .btn-primary:hover,
+  .btn-primary:focus,
+  .btn-primary:active,
+  .btn-primary.active,
+  .open .dropdown-toggle.btn-primary {
+  color: #ffffff;
+  background-color: #00688C;
+  border-color: #00688C;
+}
+
+  .row.base {
+	padding: 0 15px 40px;
+}
+
+  .row.white {
+	padding: 40px 15px;
+	background: #ffffff url(http://prms.panovus.com.stage.strategic-ic.co.uk/webroot/img/frontend/landingpages/bg_pagebreak.png) no-repeat center top;
+}
+
+  .row.grey {
+	padding: 40px 15px;
+	background: #eeeeee url(http://prms.panovus.com.stage.strategic-ic.co.uk/webroot/img/frontend/landingpages/bg_pagebreak.png) no-repeat center top;
+}
+
+  img {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+}
+
+  .split-col img {
+	margin-bottom: 30px;
+}
+
+.jumbotron {
+	position: relative;
+	padding: 0 !important;
+	margin: 0;
+}
+
+.callout {
+	position: absolute;
+	background: transparent url(http://prms.panovus.com.stage.strategic-ic.co.uk/webroot/img/frontend/landingpages/callout.png) no-repeat center right;
+	width: 75%;
+	padding: 0;
+	left: -5px;
+	top: 10%;
+	height: 80%;
+}
+
+.headings {
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+	width: 70%;
+}
+.headings h1 {
+	color: #000000;
+	font-size: 42px;
+	text-align: left;
+}
+.headings h2 {
+	text-align: left;
+}
+
+/*  FORM ELEMENTS */
+
+textarea {
+border: #cccccc;
+width: 100%;
+display: block;
+}
+label {
+  margin-bottom: 5px;
+  font-weight: 300;
+  color: #666666;
+  font-size: 11px;
+}
+
+input {
+width: 100%;
+display: block;
+}
+
+::-webkit-input-placeholder {
+	color: #999999;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+	color: #999999;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+	color: #999999;
+	font-weight: 300;
+  font-size: 14px;
+}
+
+:-ms-input-placeholder {  
+	color: #999999;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.form-control {
+  height: 40px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+          transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.form-group {
+	margin-bottom: 5px;
+}
+
+
+
+/* CUSTOM SELECT BOX STYLING
+   Credit: http://www.scribbletribe.com/how-to-style-the-select-dropdown/
+-------------------------------------------------- */
+
+  .dropcontainer {
+	position: relative;
+	font-size: 14px;
+	color: #777;
+}
+  .trigger {
+	color: #777;
+	padding: 9px 12px;
+	font-size: 14px;
+	width: 100%;
+	max-width: 100%; 
+	background: #ffffff url(../img/frontend/landingpages/img_select-arrow-open.png) 98% center no-repeat;
+	display: block;
+	border: 1px solid #ccc;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+  .trigger:active,
+  .trigger:focus,
+  .trigger:hover {
+	color: #777;
+	background: #f5f5f5 url(../img/frontend/landingpages/img_select-arrow-open.png) 98% center no-repeat;
+	border: 1px solid #ccc !important;
+}
+  .activetrigger {
+	color: #777;
+	padding: 9px 12px;
+	font-size: 14px;
+	width: 100%;
+	max-width: 100%;
+	background: #f5f5f5 url(../img/frontend/landingpages/img_select-arrow-close.png) 98% center no-repeat;
+	display: block;
+	border: 1px solid #ccc;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+  .activetrigger:hover {
+	background: #f5f5f5 url(../img/frontend/landingpages/img_select-arrow-close.png) 98% center no-repeat;
+	color: #777;
+}
+  .activetrigger:active {
+	background: #f5f5f5 url(../img/frontend/landingpages/img_select-arrow-close.png) 98% center no-repeat;
+	color: #777;
+}
+  .dropcontainer ul {
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-top: none;
+	background: #fff;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	max-width: 100%;
+	z-index: 100;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+  .dropcontainer ul li {
+	padding: 10px;
+}
+  .dropcontainer ul li:hover {
+	background: #f5f5f5;
+	outline: none;
+}
+  .dropcontainer ul li:first-child {
+	display: none;
+}
+  .dropcontainer ul li:last-child {
+	border-bottom: none;
+}
+  .dropdownhidden {
+	display: none;
+}
+  .dropdownvisible {
+	height: auto;
+}
+
+
+/*  FORM ELEMENTS */
+
+  label {
+  margin-bottom: 5px;
+  font-weight: 300;
+  color: #666666;
+  font-size: 11px;
+}
+
+  ::-webkit-input-placeholder {
+	color: #999999;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+  :-moz-placeholder { /* Firefox 18- */
+	color: #999999;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+  ::-moz-placeholder {  /* Firefox 19+ */
+	color: #999999;
+	font-weight: 300;
+  font-size: 14px;
+}
+
+  :-ms-input-placeholder {  
+	color: #999999;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+  .form-control {
+  height: 40px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+          transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+  .form-group {
+	margin-bottom: 5px;
+}
+
+
+/* HEADER AND NAV */
+
+  #header .row {
+	background: #000000;
+}
+
+  .navbar-brand {
+  width: 100px;
+  height: 25px;
+  margin: 10px 30px;
+}
+
+  .navbar-brand img {
+  width: auto;
+  height: 25px;
+}
+
+  .navbar-subbrand {
+  width: 100px;
+  height: 50px;
+  margin: 50px 30px;
+  float: right;
+}
+
+  .navbar-subbrand img {
+  width: auto;
+  height: 50px;
+}
+
+  .navbar-collapse {
+	position: relative;
+}
+
+  .navbar-nav {
+  margin: 0 -15px;
+}
+
+  .navbar-nav.primary,
+  .navbar-nav.secondary {
+	background: #FFAB00;
+}
+
+  .navbar-nav.secondary a.btn {
+	text-align: left;
+}
+
+  .nav > li > a {
+	padding: 10px 20px;
+}
+
+  .navbar-nav a {
+  color: #ffffff;
+}
+
+  .navbar-nav a:hover,
+  .navbar-nav a:focus {
+  color: #ffffff;
+}
+
+  .nav > li > a:hover,
+  .nav > li > a:focus {
+	background: #00688C;
+}
+
+  .navbar-toggle {
+  border: none;
+  border-radius: 0;
+}
+
+  .icon-bar {
+	background: #FFAB00;
+}
+
+
+/* PAGE */
+
+  #content {
+	background: #ffffff;
+}
+
+  #content .container {
+	background: #eeeeee;
+}
+
+
+/* BREADCRUMBS */
+
+  .breadcrumb .container {
+	height: 40px;
+}
+  .breadcrumb {
+  padding: 10px 20px;
+  margin-bottom: 0;
+  background: #eeeeee url(http://prms.panovus.com.stage.strategic-ic.co.uk/webroot/img/frontend/landingpages/bg_pagebreak.png) no-repeat center top;
+  border-radius: 0;
+  line-height: 20px;
+  font-weight: 300;
+  font-size: 12px;
+  width: 100%;
+}
+
+
+/*  TABLES  */
+
+  .table-responsive {
+	padding-top: 50px;
+	background: url(http://prms.panovus.com.stage.strategic-ic.co.uk/webroot/img/frontend/landingpages/img_table-scroll-left.png) no-repeat left top, url(http://prms.panovus.com.stage.strategic-ic.co.uk/webroot/img/frontend/landingpages/img_table-scroll-right.png) no-repeat right top;
+	border: none;
+}
+
+  .table-responsive .table {
+	margin-top: 0;
+}
+
+  .table {
+	margin: 50px 0;
+}
+
+  .table > thead > tr > th,
+  .table > tbody > tr > th,
+  .table > tfoot > tr > th,
+  .table > thead > tr > td,
+  .table > tbody > tr > td,
+  .table > tfoot > tr > td {
+	border: none;
+	border-right: 1px solid #eeeeee;
+}
+
+  .table td,
+  .table th {
+	border-right: 1px solid #eeeeee;
+}
+
+  .table tbody td,
+  .table tbody th {
+	background: #ffffff;
+}
+
+  .table td {
+	text-align: center;
+}
+
+  thead th {
+	background: #00688C;
+	color: #ffffff;
+}
+  thead h3,
+  thead h4 small,
+  thead h4,
+  thead p {
+	color: #ffffff;
+}
+
+  thead h4 {
+	font-size: 30px;
+}
+
+  thead h3 {
+	font-size: 18px;
+	margin-top: 10px;
+}
+
+  thead h4 small {
+	display: block;
+	font-size: 12px;
+	font-weight: 300;
+}
+
+  thead p {
+	font-weight: 300;
+}
+
+  thead .price {
+	font-weight: 400;
+	font-size: 20px;
+}
+
+  tbody th {
+	color: #00668D;
+	font-weight: 300;
+	font-size: 16px;
+}
+
+  tbody td {
+	font-size: 18px;
+	color: #666666;
+}
+
+  tbody td .small {
+	font-size: 65%;
+}
+
+  tbody td .btn {
+	font-size: 16px;
+	min-width: 0;
+}
+
+
+/* FOOTER */
+
+  .lp-footer-container {
+	/* background: url(http://prms.panovus.com.stage.strategic-ic.co.uk/webroot/img/frontend/landingpages/bg_footer.png) no-repeat center top;  */
+}
+ 
+
+.lp-footer-container a {
+  display: block;
+  text-align: center;
+}
+  .lp-footer-container .row {
+	padding-top: 20px;
+	padding-bottom: 40px;
+}
+
+  .lp-footer-brand {
+	display: block;
+	width: 200px;
+	height: 50px;
+  text-indent: -9999px;
+  background: url(http://placehold.it/200x50) no-repeat center center;
+  margin: 10px 0;
+}
+
+  footer ul {
+	list-style-type: none;
+}
+
+  footer li > a {
+	color: #ffffff;
+	font-size: 12px;
+	font-weight: 300;
+}
+
+  footer li > a:hover,
+  footer li > a:focus {
+	color: #FFA500;
+}
+
+ #content .lp-copyright-container .container {
+	background: #8C0000;
+	font-size: 12px;
+	color: #ffffff;
+	padding-top: 20px;
+        padding-bottom: 20px;
+}
+
+  .lp-copyright-container a,
+  .lp-copyright-container p {
+	color: #ffffff;
+	line-height: 20px;
+}
+
+
+
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	
+	  #header.lp-header {
+		background: none;
+	}
+	
+	  #header .row {
+		background: #8C0000;
+		height: 195px;
+	}
+	
+	  .navbar-nav {
+	  margin: 0;
+	}
+	
+	  .navbar-nav.primary {
+		position: absolute;
+		top: 155px;
+		left: 0;
+		width: 100%;
+		background: #FFAB00;
+	}
+
+	  .navbar-nav.secondary {
+		float: right;
+		background: none;
+	}
+	
+	  .nav.secondary > li > a {
+		margin-top: 10px;
+		padding: 5px 20px;
+		min-width: 0;
+	}
+	
+	  .nav.secondary > li > a:hover.btn,
+	  .nav.secondary > li > a:focus.btn {
+		margin-top: 10px;
+		padding: 5px 20px;
+		background: #00688C;
+		text-decoration: none;
+	}
+	
+	  .nav.secondary > li > a:hover,
+	  .nav.secondary > li > a:focus {
+		background: none;
+		text-decoration: underline;
+	}
+
+	  .navbar-brand {
+	  text-indent: -9999px;
+	  background: url(http://placehold.it/300x75) no-repeat center center;
+	  width: 300px;
+	  height: 75px;
+	  margin: 40px 30px;
+	}
+	
+	  .table-responsive {
+		background: none;
+	}
+	
+	  .footer-brand {
+		display: block;
+		width: 200px;
+		height: 50px;
+	  text-indent: -9999px;
+	  background: url(http://placehold.it/200x50) no-repeat center center;
+	  margin: 10px 15px;
+	}
+	
+	
+}
+
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	
+	
+	
+}
+
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	
+	
+	
+}
+
+  </style>
+
+	  
+</head>
+
+
+<body>
+
+<div class="prms-landingpage-template">
+
+	<div id="top">
+	
+		<div id="header">
+			<div class="container">
+				<div class="row">
+				
+					<div class="navbar-header">
+					
+					<a class="navbar-subbrand" href="#">[*!PARTNERLOGO!*]</a>
+					
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
+			        <span class="sr-only"><?= __('Toggle navigation')?></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+						</button>
+						
+				  
+			  	</div> <!-- /.navbar-header -->
+	
+					<a class="navbar-subbrand" href="#">[*!VENDORLOGO!*]</a>
+						
+				</div> <!-- /.row-->
+			</div> <!-- /.container-->
+		</div> <!--header-->
+		
+	</div> <!-- /#top-->
+		
+		
+	<div class="breadcrumb-container">	
+	
+		<div class="container">
+			<div class="row clearfix">
+				<div class="jumbotron clearfix">
+					[*!BANNERIMAGE!*] 
+					
+					<div class="headings">
+						[*!BANNERTEXT!*]
+					</div>
+					
+				</div>
+
+			</div>
+		</div>
+		
+	</div> <!-- /.breadcrumb-container -->
+		
+		
+	<div id="content">
+		
+		<div class="container">
+			
+			
+			<div class="row grey split-col">
+
+				<div class="col-sm-5">
+				
+					[*!BODYTEXT!*]
+
+				</div>
+				
+				<div class="col-sm-6 col-sm-offset-1">
+				
+
+				
+						<h4 class="text-left">[*!FRMHEADING!*]</h4>
+						
+						<form role="form">
+						
+							<div class="row">
+						
+								<div class="col-sm-12">
+								
+									[*!FRMFIELDS!*]
+							
+							</div>
+							
+						</form>
+					
+
+
+				</div>
+
+			</div> <!-- /.row -->
+			
+		</div> <!-- /.container -->
+	
+	</div>
+	
+	
+		
+		<footer id="lp-footer">
+		
+			<div class="lp-footer-container">
+				<div class="container">
+				
+					<div class="row white">
+				
+						<h3 class="text-center">Explore further</h3>
+				
+						[*!EXTERNALMENU!*]
+					
+					</div> <!-- /.row -->
+				</div> <!-- /.container -->
+				
+			</div> <!-- /footer-container -->
+			
+			
+			<div class="lp-copyright-container">
+			
+				<div class="container">
+
+						[*!FOOTERTEXT!*]
+					
+				</div> <!--container-->
+				
+			</div>
+		
+		</footer>
+		
+</div>
+
+</body>
+
+</html>

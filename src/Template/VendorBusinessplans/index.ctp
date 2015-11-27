@@ -1,0 +1,164 @@
+<script type="text/javascript">
+  function ajxfltr(){
+      var id = $("#id").val();
+      var fqtid = $("#financialquarter-id").val();
+      var prtid = $("#partner-id").val();
+      var cmpid = $("#campaign-id").val();
+      var status = $("#status").val();
+      // Returns successful data submission message when the entered information is stored in database.
+      var dataString = 'id='+ id + '&financialquarter_id='+ fqtid + '&partner_id='+ prtid + '&campaign_id='+ cmpid+ '&partner_id='+ prtid + '&status='+ status;
+      $.ajax ({
+            type: "POST",
+            url: "<?php echo $this->Url->build([ "controller" => "VendorBusinessplans","action" => "ajaxindex"],true);?>",
+            data: dataString,
+            cache: false,
+            success: function(html)
+            {
+                  $('#ajaxresults').html(html);
+
+            }
+      });
+  }
+  function ajxdynfltr() {
+      var fqtid = $("#financialquarter-id").val();
+      var prtid = $("#partner-id").val();
+      var cmpid = $("#campaign-id").val();
+      var status = $("#status").val();
+      var dataString = '&partner_id='+ prtid + '&quarter_id='+ fqtid + '&campaign_id='+ cmpid + '&status='+ status;
+      
+      $.ajax ({
+            type: "POST",
+            url: "<?php echo $this->Url->build([ "controller" => "VendorBusinessplans","action" => "ajaxdynamicfilter"],true);?>"+(prtid!=''?'/'+prtid:'')+(fqtid!=''?'/'+fqtid:'')+(cmpid!=''?'/'+cmpid:'')+(status!=''?'/'+status:''),
+            data: dataString,
+            cache: false,
+            success: function(json)
+            {
+                  var data = $.parseJSON(json);
+                  clearOptions('#partner-id' , 'Partner');
+                  $.each( data.partners , fillPartners );
+                  if($.inArray(prtid , data.partners))
+                    $("#partner-id").val(prtid);
+                  $('#partner-id').selectpicker('refresh');
+
+                  clearOptions('#financialquarter-id' , 'Quarter');
+                  $.each( data.quarters , fillQuarters );
+                  if($.inArray(fqtid , data.quarters))
+                    $("#financialquarter-id").val(fqtid);
+                  $('#financialquarter-id').selectpicker('refresh');
+
+                  clearOptions('#campaign-id' , 'Campaign');
+                  $.each( data.campaigns , fillCampaigns );
+                  if($.inArray(cmpid , data.campaigns))
+                    $("#campaign-id").val(cmpid);
+                  $('#campaign-id').selectpicker('refresh');
+
+                  clearOptions('#status' , 'Status');
+                  $.each( data.statuses , fillStatuses );
+                  if($.inArray(status , data.statuses))
+                    $("#status").val(status);
+                  $('#status').selectpicker('refresh');
+
+                  ajxfltr();
+            }
+      });
+  }
+  function denywithmsg(id) {
+      var answer = confirm("Are you sure you want to deny?")
+      if(answer)
+      {
+        var msg = prompt('Please leave a reason:','');
+        document.location = '<?php echo $this->Url->build([ "action" => "approveplan"],true);?>/'+id+'/Denied/'+escape(msg);
+      }
+      return false;
+  }
+  function clearOptions(select_id , value) {
+    $(select_id).empty();
+    $(select_id).append(new Option(value,''));
+    $(select_id).selectpicker('refresh');
+  }
+  function fillPartners(i, val) {
+    $('#partner-id').append(new Option(val,i));
+  }
+  function fillQuarters(i, val) {
+     $("#financialquarter-id").append(new Option(val,i));
+  }
+  function fillCampaigns(i, val) {
+    $("#campaign-id").append(new Option(val,i));
+  }
+  function fillStatuses(i, val) {
+    $("#status").append(new Option(val,i));
+  }
+  $(document).ready(function()
+  {
+      $('#id').change(function() {        
+          ajxdynfltr();
+          //ajxfltr() ;
+      });
+      $('#financialquarter-id').change(function() {
+          ajxdynfltr();
+          //ajxfltr() ;
+      });
+      $('#campaign-id').change(function() {
+          ajxdynfltr();
+          //ajxfltr() ;
+      });
+      $('#partner-id').change(function() {
+          ajxdynfltr();
+          //ajxfltr() ;
+      });
+      $('#status').change(function() {
+          ajxdynfltr();
+          //ajxfltr() ;
+      });
+
+      ajxfltr() ;
+  });
+</script>
+
+<div class="businesplans index">
+			
+	<div class="row index table-title vendor-table-title">
+	
+		<div class="col-xs-6">
+		
+			<h2><?= __('Campaign plans')?></h2>
+			<div class="breadcrumbs">
+				<?php
+					$this->Html->addCrumb('Partners', ['controller' => 'vendors', 'action' => 'partners']);
+					$this->Html->addCrumb('Manage Campaign Plans', ['controller' => 'VendorBusinessplans', 'action' => 'index']);
+					echo $this->Html->getCrumbs(' / ', [
+					    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+					    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+					    'escape' => false
+					]);
+				?>
+			</div>
+			
+		</div>
+
+		<div class="col-xs-6">
+		
+			<h5 class="pull-right">
+				<a data-toggle="collapse" data-parent="#accordion" href="#filterCollapse">
+					<?= __('Show/hide filters <i class="fa fa-filter"></i>')?>
+				</a>
+			</h5>
+			
+		</div>
+		
+		<div class="clearfix"></div>
+		
+		<?php echo $this->element('vendor-bplan-filter-form'); ?>
+		
+	</div> <!--row-table-title-->
+	
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+	
+  <div id="ajaxresults">
+    <?php echo $this->element('bplan-ajax-list'); ?>
+  </div>	
+  
+			
+</div><!-- /.container -->
+
+	<?php echo $this->element('paginator'); ?>

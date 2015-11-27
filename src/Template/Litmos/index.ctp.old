@@ -1,0 +1,48 @@
+<div class="campaigns index">
+			
+	<div class="index row table-title vendor-table-title">
+	
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+		
+			<h2><?= __('Litmos')?></h2>
+			<div class="breadcrumbs">
+				<?php
+					$this->Html->addCrumb('Litmos', ['controller' => 'Litmos', 'action' => 'index']);
+					echo $this->Html->getCrumbs(' / ', [
+					    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+					    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+					    'escape' => false
+					]);
+				?>
+			</div>
+			<!--<br />
+				<div class="row pull-right">
+					<a href="<?php echo $loginKey; ?>" target="_blank"><button type="button" class="btn">Go to training dashboard</button></a>
+				</div>-->
+				<br />
+				<div class="row pull-right">
+					<h4><i class="fa fa-spinner fa-spin"></i> Please wait...</h4>
+				</div>
+		</div>
+		
+		
+		
+	</div> <!--row-table-title-->
+	
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+	
+ 		
+</div><!-- /.container -->
+<script>
+	$(function(){
+		
+		var userLitmosID = "<?php echo $userLitmosID;?>";
+		$.post("<?php echo $this->Url->build([ "controller" => "Litmos","action" => "index"]);?>",{'userLitmosID':userLitmosID},function(data){
+			if(!data.loginKey) {
+				window.location.reload();
+			}else {
+				window.location.href = data.loginKey;
+			}
+		},'json');
+	});
+</script>

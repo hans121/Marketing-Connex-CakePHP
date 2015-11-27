@@ -1,0 +1,90 @@
+<?php // marks up radio buttons in the right way for styling: http://book.cakephp.org/3.0/en/views/helpers/form.html#list-of-templates
+	$this->Form->templates([
+    	'nestingLabel' => '{{input}}<label{{attrs}}>{{text}}</label>',
+    	'radioWrapper' => '{{input}}{{label}}',
+	]);
+?>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+	    $('#financialquarter-id').change(function() {
+	      var dataString = 'qtid='+$(this).val()+'&cal=0';
+		    $.ajax ({
+		      type: "POST",
+		      url: "<?php echo $this->Url->build([ "controller" => "Campaigns","action" => "getBalanceAllowance"],true);?>",
+		      data: dataString,
+		      cache: false,
+		      success: function(html)
+		      {
+		        $('#ajaxallowance').html(html); // If you need to change html style on the related html element refer to Template Campaigns/get_balance_allowance.ctp
+		      }
+		    });
+	    });
+
+		$('#campaign-type').change(function() {
+		  	var other_cont = $('#campaign_type_other');
+		  	var other = $('#campaign-type-other');
+		  	if(this.value=='other') {
+		  		other_cont.show();
+		  		other.prop('disabled',false);
+		  	}
+		  	else {
+		  		other.prop('disabled',true);
+		  		other_cont.hide();
+		  	}
+		});
+
+		if($.inArray($('#campaign-type').val(),['e-mail','Royal Mail','leaflet'])>-1)
+			$('#campaign_type_other').hide();
+		else
+			$('#campaign-type-other').val('<?=$campaign->campaign_type?>');
+    });
+</script>
+
+
+<div class="campaigns form col-centered col-lg-10 col-md-10 col-sm-10">
+
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+    
+	<?= $this->Form->create($campaign,['class'=>'validatedForm','type'=>'file']); ?>
+	
+	<h2><?= __('Add Campaign')?></h2>
+			<div class="breadcrumbs">
+				<?php
+					$this->Html->addCrumb('Campaigns', ['controller' => 'Campaigns', 'action' => 'index']);
+					$this->Html->addCrumb('add', ['controller' => 'Campaigns', 'action' => 'add']);
+					echo $this->Html->getCrumbs(' / ', [
+					    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+					    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+					    'escape' => false
+					]);
+				?>
+			</div>
+	
+	<fieldset>
+	
+	<?php
+	    $auth = $this->Session->read('Auth');
+	    echo $this->Form->hidden('vendor_id', ['value' => $auth['User']['vendor_id']]);
+		echo $this->Form->input('financialquarter_id', ['label'=>'Financial Quarter','value'=>$currentquarter->id,'options' => $financialquarters,'data-live-search' => true]);
+		echo $this->Form->input('name');
+		echo $this->Form->hidden('campaign_type', ['value' =>'e-mail']);
+		echo $this->Form->input('target_market');
+	    echo $this->element('checkbox-switches-campaign-modules');
+	    echo $this->Form->input('sales_value',['label'=>'Expected average deal value']);
+	?>
+        
+    <div id="ajaxallowance"><?php echo $this->element('campaign-ajax-sent'); // You may also have to edit this on the element but note that elements are used in some other areas ?></div>
+    
+    <?php 
+    	// elements are found on the Element folder in Template
+	    echo $this->element('campaign-resource-page'); // you may have to check this element for styling too
+		echo $this->Form->hidden('status',['value' =>'Y']);
+		echo $this->element('form-submit-bar'); 
+	?>
+		
+	</fieldset>
+	
+  <?= $this->Form->end(); ?>
+  
+</div>

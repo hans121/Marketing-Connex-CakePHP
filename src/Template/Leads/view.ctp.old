@@ -1,0 +1,113 @@
+<div class="folders view">
+
+	<div class="row table-title">
+
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<h2><?= __('View Lead'); ?></h2>
+			<div class="breadcrumbs">
+				<?php
+					$this->Html->addCrumb('Leads', ['controller' => 'leads', 'action' => 'index']);
+					$this->Html->addCrumb('view', ['action' => 'view',$lead->id]);
+					echo $this->Html->getCrumbs(' / ', [
+					    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+					    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+					    'escape' => false
+					]);
+				?>
+			</div>
+		</div>
+		
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	    <?= $this->Html->link(__('Go Back'), 'javascript:history.back()',['class'=>'btn btn-lg pull-right']); ?>
+		</div>
+		
+	</div> <!--row-table-title-->
+
+	<div class="row inner header-row ">
+	
+		<dt class="col-lg-9 col-md-8 col-sm-6 col-xs-4">
+			<strong><?= h($lead->first_name . ' ' . $lead->last_name) ?></strong>
+		</dt>
+		
+		<dd class="col-lg-3 col-md-4 col-sm-6 col-xs-8">
+			<div class="btn-group pull-right">
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Leads','action' => 'edit', $lead->id],['class' => 'btn pull-right']); ?>
+			</div>
+		</dd>
+		
+	</div>
+
+	<div class="row inner">   
+    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    	<?= __('Company'); ?>
+    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= $lead->company; ?>
+		</dd>
+	</div>
+	
+	<div class="row inner">   
+	    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	    	<?= __('Position'); ?>
+	    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= $lead->position; ?>
+		</dd>
+	</div>
+	
+	<div class="row inner">   
+	    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	    	<?= __('Phone'); ?>
+	    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= $lead->phone; ?>
+		</dd>
+	</div>
+	
+	<div class="row inner">   
+	    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	    	<?= __('Email'); ?>
+	    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= $lead->email; ?>
+		</dd>
+	</div>
+	
+	<!-- Assigned to: -->
+	
+	<div class="row inner header-row ">
+	
+		<dt class="col-lg-12">
+			<strong><?= h('Assigned to'); ?></strong>
+		</dt>
+		
+	</div>
+
+	<div class="row inner">   
+	    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	    	<?= __('Partner'); ?>
+	    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= $lead->partner_lead->partner->company_name; ?>
+		</dd>
+	</div>
+	
+	<div class="row inner">   
+	    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	    	<?= __('Response Time'); ?>
+	    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= $lead->partner_lead->response_time; ?> days
+		</dd>
+	</div>
+	
+	<div class="row inner">   
+	    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	    	<?= __('Notes'); ?>
+	    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= nl2br($lead->partner_lead->note); ?>
+		</dd>
+	</div>
+	
+</div>

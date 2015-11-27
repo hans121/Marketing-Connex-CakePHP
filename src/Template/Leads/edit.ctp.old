@@ -1,0 +1,48 @@
+<div class="campaigns form col-centered col-lg-10 col-md-10 col-sm-10">
+
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+    
+	<?= $this->Form->create($lead,['class'=>'validatedForm','type'=>'file']); ?>
+	
+	<h2><?= __('Edit Lead')?></h2>
+			<div class="breadcrumbs">
+				<?php
+					$this->Html->addCrumb('Leads', ['controller' => 'leads', 'action' => 'index']);
+					$this->Html->addCrumb('edit', ['action' => 'edit',$lead->id]);
+					echo $this->Html->getCrumbs(' / ', [
+					    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+					    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+					    'escape' => false
+					]);
+				?>
+			</div>
+	
+	<fieldset>
+	
+	<?php
+	    $auth = $this->Session->read('Auth');
+	    echo $this->Form->hidden('vendor_id', ['value' => $auth['User']['vendor_id']]);
+		echo $this->Form->input('first_name');
+		echo $this->Form->input('last_name');
+		echo $this->Form->input('company');
+		echo $this->Form->input('position');
+		echo $this->Form->input('phone');
+		echo $this->Form->input('email');
+	?>
+	
+	<h4><?= __('Assign Lead')?></h4>
+	<hr />
+	<?php
+		echo $this->Form->input('partner_id', ['label'=>'Assigned partner','value'=>$lead->partner_lead['partner_id'],'options' => $partners,'data-live-search' => true]);
+		echo $this->Form->input('response_time',['label'=>'Partner must respond to lead within (days)','value'=>$lead->partner_lead['response_time'],'type'=>'number']);
+		echo $this->Form->input('note',['label'=>'Instructions / Notes','value'=>$lead->partner_lead['note'],'type'=>'textarea']);
+	?>
+    <?php 
+		echo $this->element('form-submit-bar'); 
+	?>
+		
+	</fieldset>
+	
+  <?= $this->Form->end(); ?>
+  
+</div>

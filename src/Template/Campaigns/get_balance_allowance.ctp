@@ -1,0 +1,1 @@
+<?php echo $this->element('campaign-ajax-sent');?>

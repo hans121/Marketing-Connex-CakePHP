@@ -1,0 +1,343 @@
+<?php echo $this->Html->script('tinymce/tinymce.min.js');?>
+
+<script>
+	
+  $(document).ready(function(){
+    $("#ajaxpreviewimg").sticky({topSpacing:0});
+  });
+  
+	tinymce.init({
+	    //selector: "textarea"
+	 });
+	 
+	function ajaxpreviewload(poston){
+    var dataString = 'mtemplate_id='+$('#master-template-id').val()+'&poston='+poston;
+      $.ajax ({
+      type: "POST",
+      url: "<?php echo $this->Url->build([ "controller" => "EmailTemplates","action" => "ajaxpreviewimage"],true);?>",
+      data: dataString,
+      cache: false,
+      success: function(html)
+      {
+        $('#ajaxpreviewimg').html(html);
+      }
+    });
+	}
+	
+	function newajaxprvbrowsr() {
+		var formData = new FormData($('#frmemailtmplt')[0]);
+		document.getElementById('previewbrowser').contentWindow.location = 'about:blank';
+		  $.ajax({
+		    url: "<?php echo $this->Url->build([ "controller" => "EmailTemplates","action" => "ajaxpreviewbrowser"],true);?>",
+		    type: "POST",
+		    data: formData,
+		    async: false,
+		    success: function (msg) {
+		    	var ifrm = document.getElementById('previewbrowser');
+				ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
+				ifrm.document.open();
+				ifrm.document.write(msg);
+				ifrm.document.close();
+	 				//iframe = document.getElementById('previewbrowser');
+					//iframe.contentWindow.document.write(msg);
+		    },
+		    cache: false,
+		    contentType: false,
+		    processData: false
+		  });
+	 } 
+	  
+	function newcustomajaxprvbrowsr() {
+		var formData = new FormData($('#frmemailtmplt')[0]);
+	
+	  $.ajax({
+	    url: "<?php echo $this->Url->build([ "controller" => "EmailTemplates","action" => "customajaxpreviewbrowser"],true);?>",
+	    type: "POST",
+	    data: formData,
+	    async: false,
+	    success: function (msg) {
+	    	var ifrm = document.getElementById('previewbrowser');
+			ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
+			ifrm.document.open();
+			ifrm.document.write(msg);
+			ifrm.document.close();
+			//$('#previewbrowser').html(msg);
+	    },
+	    cache: false,
+	    contentType: false,
+	    processData: false
+	  });
+	 } 
+	 
+	 $(document).ready(function() {
+      $('#use_templates').change(function() {
+		  $('#toggle-width').toggleClass( 'col-lg-12 col-md-12 col-sm-12 col-xs-12' );
+		  $('#toggle-width').toggleClass( 'col-lg-9 col-md-9 col-sm-7 col-xs-12' );
+		  //$('#ajaxpreviewimg').fadeToggle( "slow", "linear" );
+      });
+      $('#master-template-id').change(function() {
+          ajaxpreviewload(0);
+      });
+      $('.hover-area1').hover(function() {
+          ajaxpreviewload(1);
+      });
+      $('.hover-area2').hover(function() {
+          ajaxpreviewload(2);
+      });
+      $('.hover-area3').hover(function() {
+          ajaxpreviewload(3);
+      });
+      $('.hover-area4').hover(function() {
+          ajaxpreviewload(4);
+      });
+    });
+    
+</script>
+
+<div class="emailTemplates form col-centered col-lg-10 col-md-10 col-sm-10">
+
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+    
+	<?= $this->Form->create($emailTemplate,['class'=>'validatedForm form-with-preview','type'=>'file','id'=>'frmemailtmplt']); ?>
+	
+	<?php
+	  if ($emailTemplate->use_templates == 'Y') {
+	      $tempchk    =   'checked';
+	  } else {
+	      $tempchk    =   '';
+	  }
+  ?>
+  
+	<fieldset>
+	
+		<div class="row checkbox_group">
+			<div class="col-md-9">
+				<h2>
+					<?= __('Manage e-mail'); ?>
+				</h2>
+				<div class="breadcrumbs">
+					<?php
+						$this->Html->addCrumb('Campaigns', ['controller' => 'Campaigns', 'action' => 'index']);
+						$this->Html->addCrumb('Manage e-mail', ['controller' => 'Campaigns', 'action' => 'view', $campaign->id]);
+						$this->Html->addCrumb('edit', ['controller' => 'EmailTemplates', 'action' => 'edit', $campaign->id]);
+						echo $this->Html->getCrumbs(' / ', [
+						    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+						    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+						    'escape' => false
+						]);
+					?>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="onoffswitch pull-right">
+					<?= $this->Form->checkbox('use_templates',['value'=>'Y','class'=>'onoffswitch-checkbox show-hide-toggle', 'id'=>'use_templates', 'checked'=>$tempchk]); ?>
+					<label class="onoffswitch-label" for="use_templates">
+						<span class="onoffswitch-inner"></span>
+						<span class="onoffswitch-switch"></span>
+					</label>
+				</div>
+				<p class="control-label pull-right">
+					<?= __('Use a template'); ?>&nbsp;
+				</p>
+			</div>
+		</div>
+		
+		<div class="row form-inner">
+			<div class="col-lg-3 col-md-3 col-sm-5 hidden-xs pull-right show-area">
+				<div class="row preview-button">
+					<div class="col-md-12">
+					     <?= $this->Html->link(__('View email online').' <i class="fa  fa-external-link"></i>', ['controller' => 'EmailTemplates','action' => 'view',$this->request['pass'][0]],['escape' => false, 'class' => 'btn pull-right','target'=>'_blank']); ?>
+					</div>
+				</div>	     
+				<div id="ajaxpreviewimg">
+		      <?php echo $this->element('email-mastertemplate-ajax-previewimg'); ?>
+				</div>
+				<div class="clearfix"></div>
+				
+			</div>
+			
+		<?php if($tempchk == 'checked') { ?>
+			<div id="toggle-width" class="col-lg-9 col-md-9 col-sm-7 col-xs-12 pull-left">
+		<?php } else { ?>
+			<div id="toggle-width" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+		<?php } ?>
+			
+				<span class="hide-area">
+					<?php	
+            echo $this->Form->input('custom_template',['label'=>'Enter your custom template text/markup']);
+					?>
+	        <div class="row preview-button">
+	        		<div class="col-md-9">
+	        			Merge Tags: <b>[*!PARTNERLOGO!*]</b> - Include Partner Logo, <b>[*!CTATEXT!*]</b> - Include Link to Landing Page <br />
+	        			To use, please copy and paste the merge tag you need.
+	        		</div>
+					  <div class="col-md-3">
+					      <span data-toggle="modal" data-target="#EMpreviewModal" onclick="newcustomajaxprvbrowsr();" id="prvbrwsr" class="btn btn-primary pull-right button"><?= __('Preview');?> <i class="fa fa-search"></i></span>
+					      <?//= $this->Html->link(__('Spam check').' <i class="fa fa-shield"></i>', ['controller' => 'Campaigns','action' => 'spamcheck',$emailTemplate->campaign_id],['escape' => false, 'class' => 'btn btn-primary pull-right']); ?>
+					  </div>
+					</div>
+				</span>
+					
+				<span class="show-area">
+					<?php
+						echo $this->Form->input('master_template_id', ['options' => $masterTemplates,'label'=>'Choose an e-mail template']);
+						//echo $this->Form->input('subject_text',['label'=>'Subject line']);
+						echo $this->Form->input('subject_option1',['label'=>'Subject Line Option 1']);
+						echo $this->Form->input('subject_option2',['label'=>'Subject Line Option 2']);
+						echo $this->Form->input('subject_option3',['label'=>'Subject Line Option 3']);
+						
+						echo '<div class="badge badge-blue badge-large">'.__('1').'</div>';
+					?>
+	
+					<div class="hover-area1">
+					
+					<!-- Jasny Bootstrap input[type='file'] styling -->  
+				<label for="description">
+					<?= __('Banner background image').' '; ?>
+					<?php 
+						$max_file_size	= $this->CustomForm->fileUploadLimit();
+						$allowed = array('image/jpeg', 'image/png', 'image/gif', 'image/JPG', 'image/jpg', 'image/pjpeg');?>
+						<a class="popup" data-toggle="popover" data-content="<?= __('The maximum file upload size is').' '.$max_file_size.__('. Supported file types are jpg, jpeg, gif, & png only');?>">
+						<i class="fa fa-info-circle"></i></a>
+				</label>
+				<div class="row inner withtop">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="">
+							<div class="fileinput fileinput-new" data-provides="fileinput">
+							  <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+							    <?php if(trim($emailTemplate->banner_bg_image) != ''){ ?>	 
+										<?php  echo $this->Html->image('emailtemplates/bgimages/'.$emailTemplate->banner_bg_image,['class'=>'img-responsive'])?>
+										<?= $this->Form->hidden('banner_bg_image_stored',['value'=>$emailTemplate->banner_bg_image]);?>
+							    <?php } ?>
+							  </div>
+							  <div>
+							    <span class="btn btn-default btn-file">
+							    	<span class="fileinput-new">Select file</span>
+							    	<span class="fileinput-exists">Change</span>
+							    	<?= $this->Form->input('banner_bg_image',['type'=>'file','id' =>'banner_bg_image', 'label'=>FALSE]);?>
+							    </span>
+							    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+							  </div>
+							</div>
+						</div>
+					</div>
+				</div>
+						
+						<?php	
+              /*
+              * Section for ajax preview browser
+              */
+              echo $this->Form->input('ajaxedit_id',['value'=>$emailTemplate->id,'type'=>'hidden']);
+							echo $this->Form->input('banner_text',['label'=>'Banner text', 'id'=>'wysiwyg1']);
+						?>
+					
+					</div>
+					
+					<?php
+						echo '<div class="badge badge-blue badge-large">'.__('2').'</div>';
+					?>
+			
+					<div class="hover-area2">
+						<?php	
+							echo $this->Form->input('heading');
+							echo $this->Form->input('body_text',['id'=>'wysiwyg2']);
+						?>
+					</div>
+				
+					<div class="hover-area3">
+						<?php
+							echo '<div class="badge badge-blue badge-large">'.__('3').'</div>';
+							echo $this->Form->input('features_heading',['type'=>'text']);
+							echo $this->Form->input('features',['id'=>'wysiwyg3']);
+						?>
+					</div>
+					
+					<div class="hover-area4">
+						<?php
+							echo '<div class="badge badge-blue badge-large">'.__('4').'</div>';
+						?>
+						
+					    <label><?= __('Call-to-action image')?></label>
+						<div class="row inner withtop">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<div class="fileinput fileinput-new" data-provides="fileinput">
+									  <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+									    <?php if(trim($emailTemplate->cta_bg_image) != ''){ ?>	 
+												<?php  echo $this->Html->image('/img/emailtemplates/ctaimages/'.$emailTemplate->cta_bg_image,['class'=>'img-responsive'])?>
+												<?= $this->Form->hidden('cta_bg_image_stored',['value'=>$emailTemplate->cta_bg_image]);?>
+									    <?php } ?>
+									  </div>
+									  <div>
+									    <span class="btn btn-default btn-file">
+									    	<span class="fileinput-new">Select file</span>
+									    	<span class="fileinput-exists">Change</span>
+									    	<?= $this->Form->input('cta_bg_image',['type'=>'file','id' =>'cta_bg_image', 'label'=>FALSE]);?>
+									    </span>
+									    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+									  </div>
+									</div>
+						    </div>
+						</div>		
+
+
+						<?php	
+							echo $this->Form->input('cta_text',['label'=>'Call-to-action text']);
+							if($cta_page_id > 0){
+								$cturl= $this->Url->build([ "controller" => "LandingPages","action" => "view","_ext" => "html",$cta_page_id],true);
+								echo $this->Form->input('cta_url',['type'=>'text','value'=>$cturl,'readonly'=>true,'label'=>'Call-to-action URL']);    
+							} else {
+								echo $this->Form->input('cta_url',['type'=>'text','label'=>'Call-to-action URL']);
+							}
+						?>
+					
+					</div>
+				</span>
+					
+				<?php
+					echo $this->element('form-submit-bar'); 
+				?>
+			
+			</div>
+		</div><!-- /.row -->
+		
+	</fieldset>
+	<?= $this->Form->end(); ?>
+  
+</div>
+
+
+<script type="text/javascript">
+	 ajaxpreviewload(0);
+</script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="EMpreviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">E-mail preview</h4>
+      </div>
+      <div class="modal-body">
+	      <div class="intrinsic-container intrinsic-container-4x3">
+		      <iframe src="#" id="previewbrowser" allowfullscreen>
+						<!-- Dynamically populate this area with the email or landing page content, via the ID -->
+		      </iframe>
+	      </div>
+				<!-- Dynamically populate this area with the email content, via the ID -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	// Replace the <textarea id="editor1"> with a CKEditor
+	// instance, using default configuration.
+	CKEDITOR.replace( 'wysiwyg1' );
+	CKEDITOR.replace( 'wysiwyg2' );
+	CKEDITOR.replace( 'wysiwyg3' );
+</script>

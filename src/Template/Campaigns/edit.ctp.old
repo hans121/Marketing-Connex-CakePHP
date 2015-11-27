@@ -1,0 +1,191 @@
+<?php 
+ $this->layout = 'admin--ui';
+?>
+<script type="text/javascript">
+$(document).ready(function()
+{
+$('#financialquarter-id').change(function() {
+var dataString = "qtid="+$(this).val()+"&cal=<?= $campaign->send_limit;?>";
+$.ajax ({
+type: "POST",
+url: "<?php echo $this->Url->build([ "controller" => "Campaigns","action" => "getBalanceAllowance"],true);?>",
+data: dataString,
+cache: false,
+success: function(html)
+{
+$('#ajaxallowance').html(html);
+}
+});
+});
+
+$('#campaign-type').change(function() {
+var other_cont = $('#campaign_type_other');
+var other = $('#campaign-type-other');
+if(this.value=='other') {
+other_cont.show();
+other.prop('disabled',false);
+}
+else {
+other.prop('disabled',true);
+other_cont.hide();
+}
+});
+
+if($.inArray($('#campaign-type').val(),['e-mail','Royal Mail','leaflet'])>-1)
+$('#campaign_type_other').hide();
+else
+$('#campaign-type-other').val('<?=$campaign->campaign_type?>');
+
+});
+</script>
+
+
+<div class="container">
+<div class="row">
+<div class="col-md-12">
+<!-- card -->
+<section class="section--center">
+<!-- card with menu button -->
+<div class="mdl-card mdl-shadow--2dp demo-card">
+<div class="mdl-card__title">
+<h2 class="mdl-card__title-text"><?= h($campaign->name) ?></h2>
+</div>
+<div class="mdl-card__subtitle">
+<h3 class="mdl-card__subtitle-text">Card SubTitle</h3>
+</div>
+<div class="mdl-card__supporting-text">
+<div class="row">
+<div class="col-md-12">
+<h4>Info Title</h4>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</p>
+<hr>
+</div>
+</div>
+
+<?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+
+<?= $this->Form->create($campaign,['class'=>'validatedForm','type'=>'file']); ?>
+<?php
+$auth = $this->Session->read('Auth');
+echo $this->Form->hidden('vendor_id', ['value' => $auth['User']['vendor_id']]);
+echo $this->Form->hidden('campaign_type', ['value' =>'e-mail']);
+
+?>
+<!-- form input content -->
+<div class="row input--field">
+<div class="col-md-3">
+<label for="exampleInput">Name</label>
+</div>
+<div class="col-md-6" id="input--field">
+<?php echo $this->Form->input('name', array(
+'div'=>false, 'label'=>false, 'placeholder' => 'campaign name', 'class' => 'form-control')); ?>
+</div>
+
+</div>
+<!-- form input content -->
+<!-- form input content -->
+<div class="row input--field">
+<div class="col-md-3">
+<label for="exampleInput">Financial Quarter</label>
+</div>
+<div class="col-md-9" id="input--field">
+<?php echo $this->Form->input('financialquarter_id', array(
+'div'=>false, 'label'=>false, 'value'=>$currentquarter->id,'options' => $financialquarters,'data-live-search' => true)); ?>
+</div>
+</div>
+<!-- form input content -->
+<!-- form input content -->
+<div class="row input--field">
+<div class="col-md-3">
+<label for="exampleInput">Target Market</label>
+</div>
+<div class="col-md-6" id="input--field">
+<?php echo $this->Form->input('target_market', array(
+'div'=>false, 'label'=>false, 'placeholder' => 'market', 'class' => 'form-control')); ?>
+</div>
+
+</div>
+<!-- form input content -->
+<!-- form input content -->
+<div class="row input--field">
+<div class="col-md-3">
+<label for="exampleInput">Average Deal Value</label>
+</div>
+<div class="col-md-6" id="input--field">
+<?php echo $this->Form->input('sales_value', array(
+'div'=>false, 'label'=>false, 'placeholder' => 'enter value', 'class' => 'form-control')); ?>
+</div>
+
+</div>
+<!-- form input content -->
+<!-- form input content -->
+<div class="row input--field">
+<div class="col-md-3">
+<label for="exampleInput">Available sends</label>
+</div>
+<div class="col-md-9" id="input--field ajaxallowance">
+<?php echo $this->element('campaign-ajax-sent');?>
+</div>
+</div>
+<div class="row">
+<div class="col-md-12">
+<p class="info--text"><small>your balance remaining for the selected quarter is, <?php echo $max_send_limit ?></small></p></div>
+</div>
+<!-- form input content -->
+<div class="row">
+<div class="col-md-12">
+<h4>Campaign Options</h4>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</p>
+<hr>
+</div>
+</div>
+
+
+
+<?php echo $this->element('checkbox-switches-campaign-modules');?>
+
+
+
+
+<?php 
+
+echo $this->Form->hidden('status',['value' =>'Y']);
+?>
+
+</fieldset>
+
+
+<!-- /form input content -->
+</div>
+<div class="mdl-card__actions mdl-card--border mdl-footer">
+<!-- breadcrumb -->
+<ol class="breadcrumb">
+<li>               
+    <?php
+      $this->Html->addCrumb('Campaigns', ['controller' => 'Campaigns', 'action' => 'index']);
+      $this->Html->addCrumb('edit', ['controller' => 'Campaigns', 'action' => 'edit', $campaign->id]);
+      echo $this->Html->getCrumbs(' / ', [
+          'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+          'url' => ['controller' => 'Vendors', 'action' => 'index'],
+          'escape' => false
+      ]);
+    ?>
+</li>
+</ol>
+<!-- Accent-colored raised button with ripple -->
+
+<?= $this->Form->button(__('Save'),['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect']); ?>
+</div>
+<div class="mdl-card__menu">
+<?= $this->Form->button(__('Save'),['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect']); ?>
+</div>
+</div>
+</section>
+<!-- /card -->
+</div>
+</div>
+</div>
+
+<?= $this->Form->end(); ?>

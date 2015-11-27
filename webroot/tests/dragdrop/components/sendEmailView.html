@@ -1,0 +1,43 @@
+
+<div class="modal-content container-fluid">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+
+    <h3 class="modal-title">Insert email address and subject:</h3>
+  </div>
+  <form name="sendEmailForm" ng-submit="submitSendEmailForm()" novalidate>
+    <div class="modal-body">
+
+        <div class="row">
+        <div class="form-group" ng-class="{ 'has-error' : sendEmailForm.email.$invalid && !sendEmailForm.email.$pristine }">
+          <label>Email</label>
+            <input type="text" ng-disabled="currentStatus=='sending'" ng-pattern="emailRegex" name="email" class="form-control" ng-model="emailAddress">
+          <p ng-show="sendEmailForm.email.$invalid && !sendEmailForm.email.$pristine" class="help-block">Please enter a valid email.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group" ng-class="{ 'has-error' : sendEmailForm.subject.$invalid && !sendEmailForm.subject.$pristine }">
+          <label>Subject</label>
+            <input type="text" ng-disabled="currentStatus=='sending'" name="subject" class="form-control" ng-model="subject" required>
+          <p ng-show="sendEmailForm.subject.$invalid && !sendEmailForm.subject.$pristine" class="help-block">Please enter a message subject.</p>
+        </div>
+      </div>
+
+      <!--<div class="row">
+        <div vc-recaptcha key="recaptchaKey"
+                          on-create="onCreate(widgetId)"
+                          on-success="onSuccess(response, widgetId)"
+                          on-expire="onExpire(widgetId)"> </div>
+        <div ng-show="invalidCaptcha" class="form-group">
+          <div class="has-error">
+            <span class="help-block">Please verify captcha</span>
+          </div>
+        </div>
+      </div>-->
+    </div>
+      <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-disabled="invalidCaptcha==true || sendEmailForm.$invalid || currentStatus=='sending'" ng-click="ok()">{{currentStatusLabel}}</button>
+      </div>
+  </form>
+</div>

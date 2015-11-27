@@ -1,0 +1,22 @@
+<div class="partnerGroups form col-centered col-lg-10 col-md-10 col-sm-10">
+  
+	<?= $this->Form->create($partnerGroup,['class'=>'validatedForm']); ?>
+	
+  	<h2><?= __('New Partner Group')?></h2>
+  	
+    <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+  
+    <fieldset>
+      
+    	<?php
+        $auth =   $this->Session->read('Auth');
+    		echo $this->Form->hidden('vendor_id', ['value' => $auth['User']['vendor_id']]);
+    		echo $this->Form->input('name');
+    	  echo $this->element('form-submit-bar');
+      ?>
+    
+    </fieldset>
+    
+  <?= $this->Form->end(); ?>
+  
+</div>

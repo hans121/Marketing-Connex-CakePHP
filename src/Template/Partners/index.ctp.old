@@ -1,0 +1,751 @@
+<?php 
+$this->layout = 'admin';
+?>
+
+<div class="index row table-title partner-table-title">
+	
+	<div class="vendor-sub-menu clearfix">
+	
+		<h2 class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?= __('Dashboard'); ?>
+		</h2>
+				
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<div class="btn-group pull-right">
+				<?= $this->Html->link(__('Export data').' '.$this->Html->tag('span',__('',false),['class' => 'fa fa-share-square-o']), ['controller'=>'Partners', 'action' => 'export'], ['escape' => false, 'title' => 'Export dashboard data', 'class'=>'pull-right btn btn-lg']); ?>
+			</div>
+		</div>
+	
+  <?php 
+	$admn = $this->Session->read('Auth');
+	$my_currency    =   $admn['User']['currency'];
+
+  	if(isset($admn['User']['role']) && $admn['User']['role'] == 'partner' && $tot_pnotifications > 0) { 
+  	?>
+
+		<div class="alert-wrap">
+		<div class="alert alert-warning alert-dismissible" role="alert">
+		  	<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		    <h4>Items that need your attention</h4>
+		    <ul>
+		      <?php echo $this->element('notifications-partner'); ?>
+		    </ul>
+		</div>  
+		</div>
+	
+	<?php 
+	} 
+	?>
+		      
+	</div> <!-- /.row-table-title-->
+	
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+
+</div>
+
+
+
+<div class="row dashboard">
+	
+	<div class="col-sm-12">
+			
+      <div class="row well">
+        
+				<div class="col-sm-9 col-sm-offset-1 col-xs-12">
+						
+					<div class="row">
+						
+						<div class="col-sm-12">
+							
+							<div class="row hidden-xs">
+						
+								<div class="col-sm-3 col-sm-offset-1 col-xs-6 col-xs-offset-3">
+									<h3 class="text-center"><?= __('Campaign status'); ?><br /><small><?= __('all campaigns'); ?></small></h3>
+								</div>
+								
+								<div class="col-sm-3 col-sm-offset-1 col-xs-6 col-xs-offset-3">
+									<h3 class="text-center"><?= __('Number of deals'); ?><br /><small><?= __('this quarter'); ?></small></h3>
+								</div>
+								
+								<div class="col-sm-3 col-sm-offset-1 col-xs-6 col-xs-offset-3">
+									<h3 class="text-center"><?= __('Total value of deals'); ?><br /><small><?= __('this quarter'); ?></small></h3>
+								</div>
+						
+							</div>
+							
+						  <div class="row">
+							  
+								<div class="col-sm-3 col-sm-offset-1 col-xs-6 col-xs-offset-3">
+									<h3 class="text-center visible-xs"><?= __('Campaign status'); ?><br /><small><?= __('all campaigns'); ?></small></h3>
+									<div class="canvas-holder">
+										<canvas id="chart-area" width="500" height="500"></canvas>
+									</div>
+								</div>
+								
+								<div class="col-sm-3 col-sm-offset-1 col-xs-6 col-xs-offset-3">
+									<h3 class="text-center visible-xs"><?= __('Number of deals'); ?><br /><small><?= __('this quarter'); ?></small></h3>
+									<div class="canvas-holder">
+										<canvas id="chart-area-deal-qty" width="500" height="500"></canvas>
+									</div>
+								</div>
+								
+								<div class="col-sm-3 col-sm-offset-1 col-xs-6 col-xs-offset-3">
+									<h3 class="text-center visible-xs"><?= __('Total value of deals'); ?><br /><small><?= __('this quarter'); ?></small></h3>
+									<div class="canvas-holder">
+										<canvas id="chart-area-deal-value" width="500" height="500"></canvas>
+									</div>
+								</div>
+						
+							</div>
+							
+						</div>
+						
+					</div> <!-- /.row -->
+					
+				</div> <!-- /.col -->
+				
+			</div> <!-- /.row -->
+			
+      <div class="row charts">
+					
+				<div class="col-sm-6 col-xs-12">
+						
+						<div class="row table-title">
+					
+							<div class="col-xs-12">
+								<h4><?= __('Active campaigns').' '; ?></h4>
+							</div>
+							
+						</div> <!--/.row.table-title-->
+						
+						<div class="row table-th hidden-xs">
+							
+							<div class="clearfix"></div>
+								
+							<div class="col-lg-8 col-md-10 col-sm-9">
+								<?= __('Campaign name') ?>
+							</div>
+							
+							<div class="col-lg-3 hidden-md hidden-sm">
+								<?= __('Ends') ?>
+							</div>
+							
+							<div class="col-lg-1 col-md-2 col-sm-3">
+							</div>
+							
+						</div> <!--/.row.table-th -->
+						
+						<!-- Are there any campaigns? -->
+						<?php
+							if($campaign_active->count()>0)
+							{
+						?>
+						
+						<!-- Start loop -->
+						<?php
+							$j =0;
+							foreach ($campaign_active as $row):
+							$j++;
+						?>
+						
+							<div class="row inner hidden-xs">
+							
+								<div class="col-lg-8 col-md-10 col-sm-9">
+									<?= $row->name ?>
+								</div>
+								
+								<div class="col-lg-3 hidden-md hidden-sm">
+									<?= date('d/m/Y',strtotime($row->financialquarter->enddate)) ?>
+								</div>
+								
+								<div class="col-lg-1 col-md-2 col-sm-3">
+							
+									<div class="btn-group pull-right">
+										<?= $this->Html->link('View',['controller'=>'PartnerCampaigns','action'=>'mycampaignslist'],['class'=>'btn btn-default'])?>
+									</div>
+								
+								</div>
+								
+							</div> <!--/.row.inner-->
+							
+							<div class="row inner visible-xs"	>
+							
+								<div class="col-xs-12 text-center">
+										
+									<a data-toggle="collapse" data-parent="#accordion" href="#active-<?= $j ?>">
+										<h3><?= $row->name ?></h3>
+									</a>
+									
+								</div> <!-- /.col -->
+								
+								<div class="col-xs-12 panel-collapse collapse" id="active-<?= $j ?>">
+							
+									<div class="row inner">
+									
+									 	<div class="col-xs-6">
+											<?= __('Ends') ?>
+									  </div>
+									  	
+									  <div class="col-xs-6">
+											<?= date('d/m/Y',strtotime($row->financialquarter->enddate)) ?>
+									  </div>
+									  
+										<div class="col-xs-12">
+									
+											<div class="btn-group pull-right">
+												<?= $this->Html->link('View',['controller'=>'PartnerCampaigns','action'=>'viewCampaign',$row->id],['class'=>'btn btn-default'])?>
+											</div>
+											
+										</div>
+										
+									</div> <!--collapseOne-->
+										
+								</div> <!--row-->
+							
+							</div> <!-- /.row.inner -->
+							
+							<?php
+									
+								endforeach;
+								
+								} else {
+									
+							?>
+								
+							<div class="row inner withtop">
+									
+								<div class="col-sm-12 text-center">
+									<?=	 __('No campaigns are currently running') ?>
+								</div>
+								
+							</div> <!--/.row.inner-->
+							
+							<?php
+							
+								}
+							
+							?>
+							
+							<!-- End loop -->
+								
+						</div> <!-- /.col -->
+			
+
+					<div class="col-sm-6 col-xs-12">
+						
+						<div class="row table-title">
+					
+							<div class="col-xs-12">
+								<h4><?= __('Upcoming campaigns (next QTR)').' '; ?></h4>
+							</div>
+							
+						</div> <!--/.row.table-title-->
+						
+						<div class="row table-th hidden-xs">
+							
+							<div class="clearfix"></div>
+								
+							<div class="col-sm-10">
+								<?= __('Campaign name') ?>
+							</div>
+							
+							<div class="col-sm-2">
+							</div>
+							
+						</div> <!--/.row.table-th -->
+						
+						<!-- Are there any campaigns? -->
+						<?php
+							if($campaign_next->count()>0)
+							{
+						?>
+						
+						<!-- Start loop -->
+						<?php
+							$j =0;
+							foreach ($campaign_next as $row):
+							$j++;
+						?>
+						
+							<div class="row inner hidden-xs">
+							
+								<div class="col-sm-10">
+									<?= $row->name ?>
+								</div>
+								
+								<div class="col-sm-2">
+							
+									<div class="btn-group pull-right">
+										<?= $this->Html->link('View',['controller'=>'PartnerCampaigns','action'=>'viewCampaign',$row->id],['class'=>'btn btn-default'])?>
+									</div>
+								
+								</div>
+								
+							</div> <!--/.row.inner-->
+							
+							<div class="row inner visible-xs"	>
+							
+								<div class="col-xs-12 text-center">
+										
+									<a data-toggle="collapse" data-parent="#accordion" href="#upcoming-<?= $j ?>">
+										<h3><?= $row->name ?></h3>
+									</a>
+									
+								</div> <!-- /.col -->
+								
+								<div class="col-xs-12 panel-collapse collapse" id="upcoming-<?= $j ?>">
+							
+									<div class="row inner">
+									
+									 	<div class="col-xs-6">
+											<?= 'Campaign name'?>
+									  </div>
+									  	
+									  <div class="col-xs-6">
+											<?= $row->name ?>
+									  </div>
+								    											
+										<div class="col-xs-12">
+									
+											<div class="btn-group pull-right">
+												<?= $this->Html->link('View',['controller'=>'PartnerCampaigns','action'=>'availablecampaigns'],['class'=>'btn btn-default'])?>
+											</div>
+											
+										</div>
+										
+									</div> <!--collapseOne-->
+										
+								</div> <!--row-->
+							
+							</div> <!-- /.row.inner -->
+							
+							<?php
+									
+							endforeach;
+								
+							} else {
+									
+							?>
+								
+							<div class="row inner withtop">
+									
+								<div class="col-sm-12 text-center">
+									<?=	 __('No upcoming campaigns') ?>
+								</div>
+								
+							</div> <!--/.row.inner-->
+							
+							<?php
+							
+							}
+							
+							?>
+							
+							<!-- End loop -->
+								
+						</div> <!-- /.col -->
+			
+			</div> <!-- /.row -->
+
+
+      <div class="row charts">
+        
+				<div class="col-xs-12">
+						
+						<div class="row table-title">
+					
+							<div class="col-xs-12">
+								<h4><?= __('Partner Manager league table').' - '.$partner_name.', '.$financialquarter_current->quartertitle; ?></h4>
+							</div>
+							
+						</div> <!--/.row.table-title-->
+						
+						<!-- Are there any campaigns? -->
+						<?php
+							if(count($partner_manager_data)>0)
+							{
+						?>
+						
+						<div class="row table-th hidden-xs">
+							
+							<div class="clearfix"></div>
+								
+							<div class="col-sm-1">
+								<?= __('Rank') ?>
+							</div>
+								
+							<div class="col-sm-2">
+								<?= __('Partner name') ?>
+							</div>
+							
+							<div class="col-sm-1 text-right">
+								<?= __('Campaigns completed') ?>
+							</div>
+
+							<div class="col-sm-2 text-right">
+								<?= __('Deals closed') ?>
+							</div>
+							
+							<div class="col-sm-2 text-right">
+								<?= __('Total value of deals closed') ?>
+							</div>
+
+							<div class="col-sm-1 text-right">
+								<?= __('Campaigns active') ?>
+							</div>
+							
+							<div class="col-sm-3">
+							</div>
+							
+						</div> <!--/.row.table-th -->
+						
+						<div class="rosette">
+							
+							<!-- Start loop -->
+							<?php
+								$j =0;
+								foreach ($partner_manager_data as $row):
+								$j++;
+							?>
+							
+								<div class="row inner hidden-xs">
+								
+									<div class="col-sm-1 text-center rank-<?=$j?>">
+										<?= $j ?>
+									</div>
+									<div class="col-sm-2">
+										<?= $row['partner_name'] ?>
+									</div>
+									
+									<div class="col-sm-1 text-right">
+										<?= $row['campaigns_completed'] ?>
+									</div>
+									
+									<div class="col-sm-2 text-right">
+										<?= $row['deals_closed'] ?>
+									</div>
+									
+									<div class="col-sm-2 text-right">
+										<?= $this->Number->currency(round($row['deals_value']),$my_currency,['places'=>0]) ?>
+									</div>
+									
+									<div class="col-sm-1 text-right">
+										<?= $row['campaigns_active'] ?>
+									</div>
+									
+									<div class="col-sm-3">
+								
+										<div class="btn-group pull-right">
+											<?= $this->Html->link('Details',['controller'=>'PartnerManagers','action'=>'view/'.$row['id']],['class'=>'btn btn-default'])?>
+										</div>
+									
+									</div>
+									
+								</div> <!--/.row.inner-->
+								
+								<div class="row inner visible-xs"	>
+								
+									<div class="col-xs-12 text-center">
+											
+										<a data-toggle="collapse" data-parent="#accordion" href="#partnerleague-<?= $j ?>">
+											<h3><?= $j.' - '. $row['partner_name'] ?></h3>
+										</a>
+										
+									</div> <!-- /.col -->
+									
+									<div class="col-xs-12 panel-collapse collapse" id="partnerleague-<?= $j ?>">
+								
+										<div class="row inner">
+										
+										 	<div class="col-xs-6">
+												<?= __('Campaigns completed') ?>
+										  </div>
+										  	
+										  <div class="col-xs-6">
+												<?= $row['campaigns_completed'] ?>
+										  </div>
+										  
+										  <div class="col-xs-6">
+												<?= __('Deals closed') ?>
+										  </div>
+										  
+								      <div class="col-xs-6">
+												<?= $row['deals_closed'] ?>
+									    </div>
+									    											
+										 	<div class="col-xs-6">
+												<?= __('Total value of deals closed') ?>
+										  </div>
+										  	
+										  <div class="col-xs-6">
+												<?= $this->Number->currency(round($row['deals_value']),$my_currency,['places'=>0]) ?>
+										  </div>
+										  
+										  <div class="col-xs-6">
+												<?= __('Campaigns active') ?>
+										  </div>
+										  
+								      <div class="col-xs-6">
+												<?= $row['campaigns_active'] ?>
+									    </div>
+
+											<div class="col-xs-12">
+										
+												<div class="btn-group pull-right">
+													<?= $this->Html->link('Details',['controller'=>'PartnerManagers','action'=>'view/'.$row['id']],['class'=>'btn btn-default'])?>
+												</div>
+												
+											</div>
+											
+										</div> <!--collapseOne-->
+											
+									</div> <!--row-->
+								
+								</div> <!-- /.row.inner -->
+								
+								<?php
+										
+								endforeach;
+									
+								} else {
+										
+								?>
+									
+								<div class="row inner withtop">
+										
+									<div class="col-sm-12 text-center">
+										<?=	 __('No partners found') ?>
+									</div>
+									
+								</div> <!--/.row.inner-->
+								
+								<?php
+								
+								}
+								
+								?>
+								
+								<!-- End loop -->
+								
+						</div> <!-- /.col -->
+			
+				</div> <!-- /.rosette -->
+				
+			</div> <!-- /.row -->
+
+	</div> <!-- /.col -->
+
+</div> <!-- /.row.dashboard -->
+	
+
+
+
+  
+<!-- Initialize Charts.js -->
+<script>
+	
+	/*!	
+	 * Chart.js
+	 * http://chartjs.org/
+	 * Version: 1.0.1-beta.4
+	 *
+	 * Copyright 2014 Nick Downie
+	 * Released under the MIT license
+	 * https://github.com/nnnick/Chart.js/blob/master/LICENSE.md
+	 */
+	 
+	/* Campaigns */
+	
+	<?php
+	$status_y = 0;
+	$status_n = 0;
+	$status_a = 0;
+	foreach($campaign_status as $c_s)
+		switch($c_s->status) {
+			case 'Y': //Completed
+				$status_y = $c_s->cnt;
+			break;
+	
+			case 'N': // Not Started
+				$status_n = $c_s->cnt;
+			break;
+	
+			case 'A': // Active
+				$status_a = $c_s->cnt;
+			break;
+		}
+	?>	
+		var CampaignStatus = [
+			{
+				value: <?=$status_a?>,
+				color:"#AD0061",
+				highlight: "#C04668",
+				label: "Active"
+			},
+			{
+				value: <?=$status_y?>,
+				color: "#57968F",
+				highlight: "#5AD3D1",
+				label: "Complete"
+			},
+			{
+				value: <?=$status_n?>,
+				color: "#FFAC00",
+				highlight: "#FFD022",
+				label: "Not started"
+			}
+		];
+		var helpers = Chart.helpers;
+		var ctx = document.getElementById("chart-area").getContext("2d");
+		var CampaignDoughnut = new Chart(ctx).Doughnut(CampaignStatus, {
+			responsive : true,
+			animateScale : true,
+			segmentStrokeColor : "#fff",
+			segmentStrokeWidth : 2,
+			tooltipTemplate : "<%if (label){%><%=label%> (<%}%><%= value %>)",
+			tooltipTitleFontFamily : "'Roboto', sans-serif",
+			tooltipTitleFontSize : 8,
+			legendTemplate : "<div><ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span> <%if(segments[i].label){%><%=segments[i].label%><%}%> (<%=segments[i].value%>)</li><%}%></ul></div>"
+			}
+		);
+	
+	var legendHolder = document.createElement('div');
+	legendHolder.innerHTML = CampaignDoughnut.generateLegend();
+	
+	// Include a html legend template after the module doughnut itself
+	helpers.each(legendHolder.firstChild.childNodes, function (legendNode, index) {
+	  helpers.addEvent(legendNode, 'mouseover', function () {
+	    var activeSegment = CampaignDoughnut.segments[index];
+	    activeSegment.save();
+	    CampaignDoughnut.showTooltip([activeSegment]);
+	    activeSegment.restore();
+	  });
+	});
+	helpers.addEvent(legendHolder.firstChild, 'mouseout', function () {
+	    CampaignDoughnut.draw();
+	});
+	
+	CampaignDoughnut.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
+	
+	
+	/*Number of deals*/
+	
+	<?php
+		$p_colors = ['#AD0061','#57968F','#FFAC00','#867C04'];
+		$h_colors = ['#C04668','#5AD3D1','#FFD022','#969B1E'];
+		$i = 0;
+	?>
+		var DealQty = [
+		<?php
+			foreach($campaign_deals as $cd):
+				$deals_cnt = 0;
+				$deals_val = 0;
+				foreach($cd->campaign_partner_mailinglists as $cml)
+					foreach($cml->campaign_partner_mailinglist_deals as $cmld) {
+						$deals_cnt++;
+						$deals_val += $cmld->deal_value;
+					}
+		?>
+			{
+				value: <?=$deals_cnt?>,
+				color:"<?=$p_colors[$i]?>",
+				highlight: "<?=$h_colors[$i]?>",
+				label: "<?=$cd->name?>"
+			},
+			<?php 
+				$i++;
+				endforeach;
+			?>
+		];
+		var helpers = Chart.helpers;
+		var ctx = document.getElementById("chart-area-deal-qty").getContext("2d");
+		var DealQtyDoughnut = new Chart(ctx).Pie(DealQty, {
+			responsive : true,
+			animateScale : true,
+			segmentStrokeColor : "#fff",
+			segmentStrokeWidth : 2,
+			tooltipTemplate : "<%if (label){%><%=label%> (<%}%><%= value %>)",
+			tooltipTitleFontFamily : "'Roboto', sans-serif",
+			tooltipTitleFontSize : 8,
+			legendTemplate : "<div><ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span> <%if(segments[i].label){%><%=segments[i].label%><%}%> (<%=segments[i].value%>)</li><%}%></ul></div>"
+			}
+		);
+	
+	var legendHolder = document.createElement('div');
+	legendHolder.innerHTML = DealQtyDoughnut.generateLegend();
+	
+	// Include a html legend template after the module doughnut itself
+	helpers.each(legendHolder.firstChild.childNodes, function (legendNode, index) {
+	  helpers.addEvent(legendNode, 'mouseover', function () {
+	    var activeSegment = DealQtyDoughnut.segments[index];
+	    activeSegment.save();
+	    DealQtyDoughnut.showTooltip([activeSegment]);
+	    activeSegment.restore();
+	  });
+	});
+	helpers.addEvent(legendHolder.firstChild, 'mouseout', function () {
+	    DealQtyDoughnut.draw();
+	});
+	
+	DealQtyDoughnut.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);		
+	
+	
+	/*Value of deals*/
+	
+	<?php
+		$p_colors = ['#AD0061','#57968F','#FFAC00','#867C04'];
+		$h_colors = ['#C04668','#5AD3D1','#FFD022','#969B1E'];
+		$i = 0;
+	?>
+		var DealVal = [
+		<?php
+			foreach($campaign_deals as $cd):
+				$deals_val = 0;
+				foreach($cd->campaign_partner_mailinglists as $cml)
+					foreach($cml->campaign_partner_mailinglist_deals as $cmld)
+						$deals_val += $cmld->deal_value;
+		?>
+			{
+				value: <?=$deals_val?>,
+				color:"<?=$p_colors[$i]?>",
+				highlight: "<?=$h_colors[$i]?>",
+				label: "<?=$cd->name.' ('.$this->Number->currency(round($deals_val),$my_currency,['places'=>0]).')' ?>"
+			},
+			<?php 
+				$i++;
+				endforeach;
+			?>
+		];
+		var helpers = Chart.helpers;
+		var ctx = document.getElementById("chart-area-deal-value").getContext("2d");
+		var DealValDoughnut = new Chart(ctx).Pie(DealVal, {
+			responsive : true,
+			animateScale : true,
+			segmentStrokeColor : "#fff",
+			segmentStrokeWidth : 2,
+			tooltipTemplate : "<%if (label){%><%=label%><%}%>",
+			tooltipTitleFontFamily : "'Roboto', sans-serif",
+			tooltipTitleFontSize : 8,
+			legendTemplate : "<div><ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul></div>"
+			}
+		);
+	
+	var legendHolder = document.createElement('div');
+	legendHolder.innerHTML = DealValDoughnut.generateLegend();
+	
+	// Include a html legend template after the module doughnut itself
+	helpers.each(legendHolder.firstChild.childNodes, function (legendNode, index) {
+	  helpers.addEvent(legendNode, 'mouseover', function () {
+	    var activeSegment = DealValDoughnut.segments[index];
+	    activeSegment.save();
+	    DealValDoughnut.showTooltip([activeSegment]);
+	    activeSegment.restore();
+	  });
+	});
+	helpers.addEvent(legendHolder.firstChild, 'mouseout', function () {
+	    DealValDoughnut.draw();
+	});
+	
+	DealValDoughnut.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
+
+</script>

@@ -1,0 +1,1 @@
+ <?php echo $this->element('landingpage-mastertemplate-ajax-previewimg'); ?>

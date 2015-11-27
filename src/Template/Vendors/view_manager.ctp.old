@@ -1,0 +1,98 @@
+<div class="vendorManagers view">
+
+	<div class="index row table-title vendor-table-title">
+
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<h2><?= __('Manager'); ?><small><?= $this->Html->link(__('See all'), ['controller' => 'Vendors','action' => 'listvendormanagers']); ?></small></h2>
+			<div class="breadcrumbs">
+				<?php
+					$this->Html->addCrumb('Managers', ['controller' => 'vendors', 'action' => 'listvendormanagers']);
+					$this->Html->addCrumb('view', ['controller' => 'vendors', 'action' => 'viewManager', $vendorManager->id]);
+					echo $this->Html->getCrumbs(' / ', [
+					    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+					    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+					    'escape' => false
+					]);
+				?>
+			</div>
+		</div>
+		
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	    <?= $this->Html->link(__('Add new'), ['controller' => 'Vendors','action' => 'addVendorManager'],['class'=>'btn btn-lg pull-right']); ?>
+		</div>
+		
+	</div> <!--row-table-title-->
+	
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+
+	<div class="row inner header-row ">
+	
+		<dt class="col-lg-9 col-md-8 col-sm-6 col-xs-4">
+			<strong><?= h($vendorManager->user->title. ' '.$vendorManager->user->full_name); ?></strong>
+		</dt>
+		
+		<dd class="col-lg-3 col-md-4 col-sm-6 col-xs-8">
+			<div class="btn-group pull-right">
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Vendors','action' => 'editManager', $vendorManager->id],['class' => 'btn pull-right']); ?>
+			</div>
+		</dd>
+		
+	</div>
+
+	<div class="row inner">   
+    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    	<?= __('Job Title'); ?>
+    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= h($vendorManager->user->job_title); ?>
+		</dd>
+	</div>
+
+	<div class="row inner">   
+    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    	<?= __('Company'); ?>
+    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= h($vendorManager->vendor->company_name); ?>
+		</dd>
+	</div>
+
+	<div class="row inner">   
+    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    	<?= __('E-mail'); ?>
+    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= h($vendorManager->user->email); ?>
+		</dd>
+	</div>
+
+	<div class="row inner">   
+    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    	<?= __('Phone'); ?>
+    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= h($vendorManager->user->phone); ?>
+		</dd>
+	</div>
+
+	<div class="row inner">   
+    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    	<?= __('Primary Manager'); ?>
+    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?php if($vendorManager->primary_manager == 'Y') { ?>
+	      <span class="glyphicon glyphicon-ok"></span>
+      <?php } ?>
+		</dd>
+	</div>
+	
+	<div class="row inner">   
+    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    	<?= __('Username'); ?>
+    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= h($vendorManager->user->username); ?>
+		</dd>
+	</div>
+
+</div>

@@ -1,0 +1,1 @@
+ <?php echo $this->element('email-mastertemplate-ajax-previewimg'); ?>

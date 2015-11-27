@@ -1,0 +1,25 @@
+<div class="users form col-centered col-lg-8 col-md-8 col-sm-10">
+  
+  <?= $this->Form->create($user,['class'=>'validatedForm']) ?>
+  
+  	<h2><?= __('Edit My Account Details'); ?></h2>
+  	
+    <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+  	
+      <fieldset>
+  		
+      	<?php
+      		echo $this->Form->input('username',['readonly'=>true]);
+      		echo $this->element('title-form');
+      		echo $this->Form->input('first_name');
+      		echo $this->Form->input('last_name');
+      		echo $this->Form->input('job_title');
+      		echo $this->Form->input('phone');
+          echo $this->element('form-submit-bar');
+        ?>
+      
+    	</fieldset>
+  
+  <?= $this->Form->end() ?>
+
+</div>

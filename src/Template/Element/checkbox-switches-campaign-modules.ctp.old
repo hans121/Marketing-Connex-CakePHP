@@ -1,0 +1,88 @@
+	
+	<?php // Get the current status and set the checkboxes accordingly
+	
+		if(isset($campaign->html) && $campaign->html == 'Y'){ 
+			$htmlchk	=	true;
+		} else {
+			$htmlchk	=	false;
+		};
+
+		if(isset($campaign->mobile_delivery) && $campaign->mobile_delivery == 'Y'){ 
+			$mobilechk	=	true;
+		} else {
+			$mobilechk	=	false;
+		};
+
+		if(isset($campaign->include_landing_page) && $campaign->include_landing_page == 'Y'){ 
+			$landingchk	=	true;
+		} else {
+			$landingchk	=	false;
+		};
+	
+	?>
+
+
+
+<?php
+	echo
+	'<div class="checkbox_group checkboxes-inline">';
+
+	echo
+
+		
+			'<div class="row checkbox-in-inputbox clearfix input--field">'.
+			
+				'<div class="col-md-4"><label>'.__('HTML Email').'</label></div>'.
+				
+				'<div class="col-md-3">'.
+					
+							$this->Form->checkbox('html' ,['id'=>'html','checked'=>$htmlchk]).
+				'</div>'.
+				'<div class="col-md-6">'.
+				
+
+            '</div>'.
+			'</div>';
+
+
+	//echo
+	//	'<label>'
+	//		.__('Mobile support').
+	//	'</label>'.
+	//	
+	//		'<div class="row checkbox-in-inputbox clearfix">'.
+	//		
+	//			'<div class="col-md-4 col-xs-9"><label>'.__('Optimize for mobile delivery').'</label></div>'.
+	//			
+	//			'<div class="col-md-2 col-xs-3">'.
+	//				'<div class="onoffswitch">'.
+	//						$this->Form->checkbox('mobile_delivery' ,['value'=>'Y', 'class'=>'onoffswitch-checkbox', 'id'=>'mobile_delivery','checked'=>$mobilechk]).
+	//					'<label class="onoffswitch-label" for="mobile_delivery">'.
+	//						'<span class="onoffswitch-inner"></span>'.
+	//						'<span class="onoffswitch-switch"></span>'.
+	//					'</label>'.
+	//				'</div>'.
+	//			'</div>'.
+	//			
+	//		'</div>';
+
+	echo
+
+		
+			'<div class="row checkbox-in-inputbox clearfix input--field">'.
+			
+				'<div class="col-md-4"><label>'.__('Include landing page').'</label></div>'.
+				
+				'<div class="col-md-3">'.
+					
+							$this->Form->checkbox('include_landing_page' ,['value'=>'Y', 'id'=>'include_landing_page','checked'=>$landingchk]).
+				'</div>'.
+				'<div class="col-md-6">'.
+				
+
+			'</div>'.
+			'</div>';
+		
+	echo
+	'</div>';
+?>

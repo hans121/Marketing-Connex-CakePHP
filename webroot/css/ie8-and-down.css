@@ -1,0 +1,8 @@
+
+/* Fix File Input Button in IE8.*/
+.file-wrapper .pull-right {
+	display: block;
+	float:none !important;
+	width:130px;
+	margin-bottom:5px;
+}

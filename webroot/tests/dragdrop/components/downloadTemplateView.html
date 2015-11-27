@@ -1,0 +1,86 @@
+
+<div class="mainContent downloadTemplate" ng-controller="downloadTemplateCtrl" ng-init="initDownloadTemplate()">
+	<ng-include src="'Client/app/components/core/header/headerView.html'"></ng-include>
+    <div class="container-fluid downloadTemplate">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h1>Download started...</h1>
+                <h2>
+                	Use your favorite email marketing platform to send it.<br>
+                	Download didn't start? <a ng-click="downloadTemplate()">Click here</a> to try again.
+				</h2>
+            </div>
+        </div>
+        <div class="row">
+        	<div class="col-md-6">
+            	<h3><a class="right" ng-click="editYourMessage()">Edit this message</a></h3>
+            </div>
+            <div class="col-md-6">
+            	<h3><a ng-click="startNewMessage()">Create a new message</a></h3>
+            </div>
+        </div>
+        <div class="row line_bottom">&nbsp;</div>
+        <div class="row feature">
+        	<div class="col-md-6">
+            	<div class="featureBox rounded right">
+                    <h4>Upgrade to PRO</h4>
+                    <ul>
+                        <li class="featCloud">Save and edit in the cloud</li>
+                        <li class="featDiscuss">Create and use templates</li>
+                        <li class="featComment">Share notes with your team</li>
+                    </ul>
+                    <br clear="all">
+                    <keepintouch id="beeProForm"
+                                 header="We are going PRO"
+                                 subscription-group-id="1541"
+                                 subscription-list-id="97"
+                                 show-condition-agreement="false"
+                                 form-title="When? You tell us!"
+                                 form-confirm="Yes, keep me posted."
+                                 form-description="Sign up to tell us you like this idea, and you want to receive news about BEE Pro."
+                                 body-template-url="Client/app/components/core/modals/upgradeToPro/upgradeToProView.html"
+                                 confirm-callback="subscribeProAccount(result)">
+                        Keep me posted
+                    </keepintouch>
+				</div>
+            </div>
+            
+            <div class="col-md-6">
+            	<div class="featureBox rounded left">
+                    <h4>Developer? Embed BEE into your app</h4>
+                    <ul>
+                        <li class="featHeart">Easy and quick integration</li>
+                        <li class="featLock">Oauth2 authorization</li>
+                        <li class="featGear">Many configuration settings</li>
+                    </ul>
+                    <br clear="all">
+                    <keepintouch id="beeBetaAccountForm"
+                                 header="Take the BEE experience to your app"
+                                 subscription-group-id="1547"
+                                 subscription-list-id="101"
+                                 show-condition-agreement="true"
+                                 form-title="Request a beta account"
+                                 form-description="Add your name to the waiting list (it's a BETA, so we're currently limiting the number of installations of the Plugin)."
+                                 form-confirm="Yes, I want to try BEE plugin"
+                                 body-template-url="Client/app/components/core/modals/askForBetaAccount/askForBetaAccountView.html"
+                                 confirm-callback="subscribeBetaAccount(result)">
+                        Sign up!
+                    </keepintouch>
+				</div>
+            </div>
+        </div>
+        <div class="row line_bottom_social">&nbsp;</div>
+        <div class="row">
+        	<div class="col-xs-12 text-center socialBox">
+            	<h3>Liked? Share it!</h3>
+                <ul>
+                	<li class="FB rounded"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.beefree.io"></a></li>
+                    <li class="TW rounded"><a target="_blank" href="https://twitter.com/intent/tweet?url=https://www.beefree.io&via=mailup_us&text=Rich%20email%20messages%20made%20easy"></a></li>
+                    <li class="IN rounded"><a target="_blank" href="http://www.linkedin.com/shareArticle?mini=true&url=https://www.beefree.io&title=Rich%20email%20messages%20made%20easy"></a></li>
+                    <li class="GP rounded"><a target="_blank" href="https://plus.google.com/share?url=https://www.beefree.io"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row lastrow">&nbsp;</div>
+</div>

@@ -1,0 +1,30 @@
+
+<div class="campaigns form col-centered col-lg-10 col-md-10 col-sm-10">
+
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+    
+	<?= $this->Form->create($user,['class'=>'validatedForm']); ?>
+	
+	<h2><?= __('Send test email')?></h2>
+	<div class="breadcrumbs">
+		<?php
+			$this->Html->addCrumb('Campaigns', ['controller' => 'Campaigns', 'action' => 'index']);
+			$this->Html->addCrumb('Send test email', ['controller' => 'Campaigns', 'action' => 'sendtestemail', $campaign->id]);
+			echo $this->Html->getCrumbs(' / ', [
+			    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+			    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+			    'escape' => false
+			]);
+		?>
+	</div>
+	
+	<fieldset>
+    <?= $this->Form->input('to_name');?>
+    <?= $this->Form->input('to_email');?>
+    <?= $this->Form->input('subject');?>	
+    <?php echo $this->element('form-submit-bar');?>
+	</fieldset>
+	
+  <?= $this->Form->end(); ?>
+  
+</div>

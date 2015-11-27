@@ -1,0 +1,45 @@
+
+<div id="{{id}}">
+    <div class="container-fluid">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+
+            <h4 class="modal-title">{{header}}</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class"row">
+                <div class="col-xs-6" ng-include src="getBodyTemplateUrl()"></div>
+                <div class="col-xs-6 {{id}}">
+                    <div class="box-form rounded">
+                        <h2>{{formTitle}}</h2>
+                        <p>{{formDescription}}</p>
+                        <form name="kit_form" ng-submit="submitForm()" novalidate>
+                            <div class="container-fluid">
+                                <div class="row form-group" ng-class="{ 'has-error' : kit_form.email.$invalid && !kit_form.email.$pristine }">
+                                    <label>Email</label>
+                                    <input type="email" ng-disabled="currentStatus=='sending'" ng-pattern="emailRegex" name="email" class="form-control" ng-model="user.email">
+                                    <div ng-show="kit_form.email.$invalid && !kit_form.email.$pristine" class="help-block error-tooltip"><div class="tooltip-arrow"></div>Enter a valid email</div>
+                                </div>
+                                <div class="row form-group" ng-class="{ 'has-error' : kit_form.name.$invalid && !kit_form.name.$pristine }">
+                                    <label>Name</label>
+                                    <input type="text" ng-disabled="currentStatus=='sending'" name="name" class="form-control" ng-model="user.name" required>
+                                    <div ng-show="kit_form.name.$invalid && !kit_form.name.$pristine" class="help-block error-tooltip"><div class="tooltip-arrow"></div>Your name is required.</div>
+                                </div>
+                            
+	                            <div ng-if="showConditionAgreement" class="row form-group" ng-class="{ 'has-error' : kit_form.conditions.$invalid && !kit_form.conditions.$pristine }">
+                                    <input type="checkbox" ng-disabled="currentStatus=='sending'" name="conditions" ng-model="hasConditionsAccepted" required /> I agree with all <a href="Client/assets/pdf/BEEplugin_Public_BETA_Agreement.pdf" target="_blank">Terms & Conditions</a> of use 
+	                                <div ng-show="kit_form.conditions.$invalid && !kit_form.conditions.$pristine" class="help-block error-tooltip checkbox_error"><div class="tooltip-arrow"></div>Please check conditions agreement.</div>
+	                            </div>
+	                        </div>
+                            <button type="submit" ng-disabled="kit_form.$invalid || currentStatus=='sending'" class="btn btn-primary btn-generic" ng-click="ok()">{{currentStatusLabel}}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>  	
+        <span>
+
+        </span>
+    </div>
+</div>

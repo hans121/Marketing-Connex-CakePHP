@@ -1,0 +1,567 @@
+<?php 
+ $this->layout = 'admin';
+?>
+<script type="text/javascript">
+
+ 
+	function showImageThumb(appName,appPlatform,label,classes,image){
+		
+		var toScroll = $(".previewArea").offset().top;
+		var bodyScroll = $(window).scrollTop();
+		
+		$('.linkCheckButtons').css({'display':'none'});
+		$('.popover').popover('hide');
+		
+		if(bodyScroll > toScroll) {
+			$('html, body').animate({
+				scrollTop: toScroll - 30
+			}, 1000);
+		}
+		//alert(appPlatform);
+		if(appPlatform == 'web-based') {
+			
+			web_based(appName,classes,image);
+		}else {
+			$('.browserButtons').html('');
+		}
+		
+		$('.clientTitle').html(label);
+		$('.panel-body .imageContainer').html('<div class="'+classes+'"><img src="http://'+image+'" class="img-responsive center-block" /></div>');
+	}
+	function web_based(appName,classes,image){
+		$.post("<?php echo $this->Url->build([ "controller" => "Campaigns","action" => "webbased", $checker['TestID']],true);?>",{'appName':appName,'classes':classes,'image':image},function(data){
+			//alert (data);
+			$('.browserButtons').html(data);
+		});
+	}	
+	function browserClick(appVer,classes,image, browserchoice) {
+		$('.linkCheckButtons').css({'display':'none'});
+		 $('.popover').popover('hide');
+		$('.panel-body .imageContainer').html('<div class="'+classes+'"><img src="http://'+image+'" class="img-responsive center-block" /></div>');		
+		if (appVer.indexOf("ff") >= 0) {
+			$('.browserButtons button').removeClass("active");
+			$('.firefox').toggleClass("active");
+
+		}
+		else if (appVer.indexOf("chrome") >= 0) {
+			$('.browserButtons button').removeClass("active");
+			$('.chrome').toggleClass("active");
+		} else {
+			$('.browserButtons button').removeClass("active");
+			$('.explorer').toggleClass("active");
+		}
+	}
+  	// Check Status Line
+	var timer = null;
+	var spamTimer = null;
+	var maxexec = 0;
+
+	function assignImage(appID,appName,appLongName,appPlatform,appThumb,appImg) {
+		
+		if(appThumb.indexOf("http://")!=-1)
+		{
+			appThumb = appThumb.replace('http://','');
+			appImg = appImg.replace('http://','');
+		}
+
+		if(appThumb.indexOf("https://")!=-1)
+		{
+			appThumb = appThumb.replace('https://','');
+			appImg = appImg.replace('https://','');
+		}
+		if(appThumb=='s3.amazonaws.com' || appThumb=='') {
+			$('#'+appID+'-preview').html('no preview available');
+			$('#'+appID+'-icon').attr('class', 'fa fa-times');
+		}
+		else
+			$.ajax({
+			    url: appThumb,
+			    type: "GET",
+			    async: true,
+			    error: function (xhr) {
+			    	$('#'+appID+'-preview').html('no preview available');
+			    	$('#'+appID+'-icon').html('<i class="fa fa-times"></i>');
+			    },
+			    success: function (msg) {
+						
+				    	var firstImageID = $('.web-based a:first').attr('data-id');	
+						
+						//load first image when it's done checking
+						if(appID == firstImageID) {
+							
+							showImageThumb(appName,appPlatform,appLongName,'fullimage '+appPlatform+' '+appName,appImg);
+						}
+			
+			    	$('#'+appID+'-preview').html('<div onclick="showImageThumb(\''+appName+'\',\''+appPlatform+'\',\''+appLongName+'\',\'fullimage '+appPlatform+' '+appName+'\',\''+appImg+'\')" data-toggle="tooltip" data-placement="left" title="Click to view image">'+appLongName+' <span class="pull-right"><i class="fa fa-check"></i></span></div>');
+			    	
+					
+					
+			    },
+			});
+	}
+
+	function checkStatus() {
+		$.ajax({
+	    url: "<?php echo $this->Url->build([ "controller" => "Campaigns","action" => "browserandspamchecker", $checker['TestID']],true);?>",
+	    type: "GET",
+	    async: true,
+	    success: function (msg) {
+  			obj = JSON.parse(msg);
+  			res = obj.TestingApplications;
+  			completed = 0;
+  			percent = 0;
+  			total = 0;
+  			for(var i in res)
+  			{
+			    app = res[i];
+			    if(app.State=='complete' || app.State=='error')
+			    {
+			    	completed++;
+			    	if(app.State=='complete')
+			    	{
+				    	var platform = app.PlatformName;
+				    		platform = platform.toLowerCase();
+				    		platform = platform.replace(' ','-');
+
+				    	var appname = app.ApplicationName;
+				    		appname = appname.toLowerCase();
+						
+						var applicationLongName = app.ApplicationLongName;
+							applicationLongName = applicationLongName.replace('(Explorer)','');
+												
+						//Update Details
+						if($('#'+app.Id+'-icon').html()=='<i class="fa fa-circle-o-notch fa-spin"></i>')
+							assignImage(app.Id,appname,applicationLongName,platform,app.FullpageImageThumbNoContentBlocking,app.FullpageImageNoContentBlocking);
+					}
+					else if(app.State=='error')
+					{
+						$('#'+app.Id+'-preview').html('no preview available');
+						
+						$('#'+app.Id+'-icon').attr('class', 'fa fa-times');
+					}
+			    }
+
+			    total++;
+  			}
+  			percent = Math.round((completed/total)*100);
+  
+  			$('#completed').html(completed);
+  			$('.percent').html(percent);
+  			//$('#hits').html(hits);
+  			//$('#passed').html(passed);
+  			$('#total').html(total);
+  			$('#progressbar').attr('aria-valuenow', percent);
+  			$('#progressbar').width(percent + '%');
+  
+  			maxexec++;
+  
+          if(obj.State=='complete' || obj.State=='completed' || percent==100  || maxexec==50) //limit running till complete or till maxexec
+          {
+          	clearInterval(timer);
+			//checkSpamStatus();
+			spamTimer = setInterval(function () { checkSpamStatus() },5000); // run every 5 secs
+          	if(obj.State=='complete' || obj.State=='completed' || percent==100)
+          	{          		
+          		html = "<i class='fa fa-check'></i> Finished browser-testing your email template. Please review the images below";
+				
+          	}
+          	else
+          		html = "<i class='fa fa-exclamation-triangle'></i> "+obj.State+": There seems to be a problem with the browser-testing system. A timeout has occured. Please try again later.  If the problem persists please contact Customer Support";
+
+          	for(var i in res)
+  			{
+			    app = res[i];
+			    if(app.State!='complete')
+			    {
+					$('#'+app.Id+'-preview').html('no preview available');
+					$('#'+app.Id+'-icon').attr('class', 'fa fa-times');
+			    }
+  			}
+
+  	        $('#recommendation').html(html);
+  	        $("#spamcheckprogress").css("display", "none");
+  	        $("#spamrecheck").css("display", "block");
+			
+          }
+	    },
+	    cache: false,
+	    contentType: false,
+	    processData: false
+	  });
+	} 
+	
+	function markNotSpam() {
+		$.ajax({
+	    url: "<?php echo $this->Url->build([ "controller" => "Campaigns","action" => "marknotspam", $id],true);?>",
+	    type: "GET",
+	    async: false,
+	    success: function (msg) {
+  			//alert('Campaign email has been marked as passed');
+	    },
+	    cache: false,
+	    contentType: false,
+	    processData: false
+	  });
+	}
+	function checkSpamStatus() {
+		//$('.browserCheck').attr('id','');
+		$.ajax({
+	    url: "<?php echo $this->Url->build([ "controller" => "Campaigns","action" => "browserandspamchecker", $spamChecker['TestID']],true);?>",
+	    type: "GET",
+	    async: false,
+	    success: function (msg) {
+			
+  			obj = JSON.parse(msg);
+  			res = obj.TestingApplications;
+  			percentpassed = 0;
+  			completed = 0;
+  			percent = 0;
+  			hits = 0;
+  			passed = 0;
+  			total = 0;
+  			for(var i in res)
+  			{
+			    app = res[i];
+			    if(app.State=='complete')
+			    {
+			    	completed++;
+					if(app.FoundInSpam==true)
+						hits++;
+					else
+						passed++;
+
+					//Update Details
+					//$('#'+app.Id+'-summary').html((app.FoundInSpam==true?'Failed':'Passed') + (app.SpamScore==0?'':' <small>(with a score of '+app.SpamScore+')</small>') );
+
+					$('#'+app.Id+'-icon').html((app.FoundInSpam==true?'<i class="fa fa-times"></i>':'<i class="fa fa-check"></i>'));
+
+					details = '';
+
+					spamheaders = app.SpamHeaders;
+					
+	      //  $('#'+app.Id+'-details').css("display", "none");
+	        
+					for(var i2 in spamheaders)
+					{
+						spamhead = spamheaders[i2];
+						details += spamhead.Description + " ";
+					}
+					//$('#'+app.Id+'-details').attr('data-content', details);
+			    }
+			    
+  			    if(details > ' ')
+  			    {
+  	     //   $('#'+app.Id+'-details').css("display", "inline");
+            }
+
+			    total++;
+  			}
+			/*
+  			percent = Math.round((completed/total)*100);
+  			percentpassed = Math.round((passed/total)*100);
+  
+  			$('#completedSpam').html(completed);
+  			$('.percentSpam').html(percent);
+  			$('#hitsSpam').html(hits);
+  			$('#passedSpam').html(passed);
+  			$('#totalSpam').html(total);
+  			$('#progressbarSpam').attr('aria-valuenow', percent);
+  			$('#progressbarSpam').width(percent + '%');
+  */
+  			maxexec++;
+  
+          if(obj.State=='complete' || obj.State=='completed' || percent==100  || maxexec==500) //limit running till complete or till maxexec
+          {
+          	clearInterval(spamTimer);
+          	if(obj.State=='complete' || obj.State=='completed' || percent==100)
+          	{
+          		if(hits==0)
+          			markNotSpam();          		
+          		
+          		html = hits==0?"<i class='fa fa-check'></i> Your template has passed the spam check, and is approved for sending":"<i class='fa fa-times'></i> Your template has failed the spam check.  Please edit your template content and check again";
+          	}
+          	else
+          		html = "<i class='fa fa-exclamation-triangle'></i> "+obj.State+": There seems to be a problem with the Spam Check system.  Please try again.  If the problem persists please contact Customer Support";
+
+  	      //  $('#recommendationSpam').html(html);
+  	      //  $("#spamcheckprogressSpam").css("display", "none");
+  	      //  $("#spamrecheckSpam").css("display", "block");
+          }
+	    },
+	    cache: false,
+	    contentType: false,
+	    processData: false
+	  })
+	}
+	
+	$(document).ready(function() {
+		//checkStatus();
+		timer = setInterval(function () { checkStatus() },5000); // run every 5 secs
+	
+    });
+    
+</script>
+
+
+<?php
+  $res = $checker['CheckerRes'];
+ // echo "<pre>";print_r($res['TestingApplications']);echo"</pre>"; exit(); comment for now
+  $completed = 0;
+  $percent = 0;
+  //$hits = 0;
+  //$passed = 0;
+  if($total = count($res['TestingApplications']))
+  {
+  	foreach($res['TestingApplications'] as $app)
+  	{
+  		if($app['State']=='complete')
+  		{
+  			$completed++;
+
+  			//if($app['FoundInSpam']==true)
+				//$hits++;
+			//else
+				//$passed++;
+  		}
+  	}
+  	$percent = round(($completed/$total)*100);
+  }
+?>
+
+
+<div class="Campaigns view">
+
+	<div class="index row table-title vendor-table-title">
+
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<h2><?= __('Browser and Spam checker'); ?></h2>
+			<div class="breadcrumbs">
+				<?php
+					$this->Html->addCrumb('Campaigns', ['controller' => 'Campaigns', 'action' => 'index']);
+					$this->Html->addCrumb('Browser and Spam checker', ['controller' => 'Campaigns', 'action' => 'browserandspamchecker', $id]);
+					echo $this->Html->getCrumbs(' / ', [
+					    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+					    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+					    'escape' => false
+					]);
+				?>
+			</div>
+		</div>
+		
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+		</div>
+		
+	</div> <!--row-table-title-->
+
+		
+	<div class="col-md-9">
+		<div class="previewArea panel panel-default">
+			 <div class="panel-heading">
+				<span class="clientTitle col-md-6">Browser Preview</span>
+				<span class="browserButtons pull-right btn-group" role='group' aria-label='...'></span>
+				<div class="clearfix"></div>
+			 </div><!--panel-heading-->
+			 <div class="panel-body" style="minimum-height: 750px;">
+				<div class="row" id="spamcheckprogress">
+
+					<div class="col-xs-10 col-xs-offset-1">
+
+						<?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+
+						<h3 class="text-center"><?= __('Please wait while we process your template...'); ?></h3>
+
+						<div class="progress spamchecker">
+							<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?=$percent?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$percent?>%" id="progressbar">
+							<span class="sr-only"><span class="percent"><?=$percent?></span>% <?= __('Complete');?></span>
+							<span class="percent"><?=$percent?></span>%
+							</div>
+						</div><!--spamchecker-->
+					</div><!--col-xs-10-->
+				</div><!--spamcheckprogress-->
+				<div class="imageContainerTop">
+					<div id="linkButtonsAjax"></div>
+					
+					<div class="imageContainer"></div>
+				</div><!--imageContainerTop-->
+				<!--<pre><?php print_r($linkChecker); ?></pre> -->
+			 </div><!--panel-body-->
+		</div><!--panel-->
+	</div><!--col-md-9-->
+	<div class="col-md-3">
+		<div class="list-group">
+		<?php $linkCheckCount = count($linkChecker['Links']);?>
+		<div class="list-group link-validation">
+			<div class="list-group-item list-group-item-info"><i class="fa fa-link"></i> Link validation</div>
+				<a href="javascript:void(0);" class="clickPreviewLinks list-group-item"><span class="liveLinkCount"><?= $linkCheckCount;?> link<?php echo ($linkCheckCount > 1 ?'s':'');?> checked</span> <span class="pull-right" id="linkProcessIcon"><i class="fa fa-circle-o-notch fa-spin" ></i></span></a> 
+		</div><!--list-group-->
+
+		<div class="list-group web-based">
+			<span class="list-group-item list-group-item-info"><i class="fa fa-globe"></i> Web-based email clients</span>
+			
+			<?php 
+				$apIDs = array();
+				foreach($res['TestingApplications'] as $app): 
+					if($app['PlatformName'] == 'Web-based'):
+						if (strpos($app['ApplicationLongName'],'(Explorer)') !== false) {
+							$browser = str_replace('(Explorer)','',$app['ApplicationLongName']);
+			?>
+							<a href="javascript:void(0);" id="<?=$app['Id']?>-preview" class="list-group-item" data-id="<?=$app['Id']?>"><?= __($browser); ?> <span class="pull-right browserCheck" id="<?=$app['Id']?>-icon"><i class="fa fa-circle-o-notch fa-spin"></i></span></a>
+				
+			<?php 
+						}
+					endif;
+				endforeach; 
+			?>
+		</div><!--list-group-->
+
+			<span class="list-group-item list-group-item-info"><i class="fa fa-desktop"></i> Desktop email clients</span>
+			
+			<?php 
+				foreach($res['TestingApplications'] as $app): 
+					if($app['PlatformName'] == 'Mac OS' || $app['PlatformName'] == 'Windows'):
+			?>
+						<a href="javascript:void(0);" id="<?=$app['Id']?>-preview" class="list-group-item"><?= __($app['ApplicationLongName']); ?> <span class="pull-right browserCheck" id="<?=$app['Id']?>-icon"><i class="fa fa-circle-o-notch fa-spin"></i></span></a>
+				
+			<?php 
+					endif;
+				endforeach; 
+			?>
+		</div><!--list-group-->
+		<div class="list-group">
+			<span class="list-group-item list-group-item-info"><i class="fa fa-mobile-phone"></i> Mobile email clients</span>
+			
+			<?php 
+				foreach($res['TestingApplications'] as $app): 
+					if($app['PlatformName'] == 'Mobile devices'):
+			?>
+						<a href="javascript:void(0);" id="<?=$app['Id']?>-preview" class="list-group-item"><?= __($app['ApplicationLongName']); ?> <span class="pull-right browserCheck" id="<?=$app['Id']?>-icon"><i class="fa fa-circle-o-notch fa-spin"></i></span></a>
+				
+			<?php 
+					endif;
+				endforeach; 
+			?>
+		</div><!--list-group-->
+	
+		<?php
+			$spamResult = $spamChecker['CheckerRes'];
+		?>
+		<div class="list-group">
+			<div class="list-group-item list-group-item-info"><i class="fa fa-ban"></i> Spam filter results</div>
+			<?php foreach($spamResult['TestingApplications'] as $app): ?>	
+				<div class="list-group-item"><?= __($app['ApplicationLongName']); ?> <span class="pull-right" id="<?=$app['Id']?>-icon"><i class="fa fa-circle-o-notch fa-spin" ></i></span></div>    
+			<?php endforeach;?>
+		</div><!--list-group-->
+		
+	</div><!--col-md-3-->
+
+</div>
+<script>
+	$(function(){
+		$('.imageContainer').css({'position':'relative'});
+		$('.linkCheckButtons,#linkButtonsAjax').css({'display':'none'});
+		
+		//linkChecker();
+		linkCheckerTimer = setInterval(function () { linkChecker() },5000); // run every 5 secs
+	});
+	var linkCheckerTimer = null;
+	function linkChecker() {
+		
+		 $.post("<?php echo $this->Url->build([ "controller" => "Campaigns","action" => "linkcheck", $linkCheckGetID['Id']],true);?>",function(data){
+			
+			if(data.State == 'Complete'){
+				clearInterval(linkCheckerTimer);
+				//alert(data.Id);
+				var linkCount = data.Links.length;
+				if(linkCount > 0){
+					$('.liveLinkCount').html(linkCount+" link"+ (linkCount > 1 ? 's': '') +" found");
+					$('#linkProcessIcon').html("<i class='fa fa-check'></i>");
+					$('.clickPreviewLinks').attr("onclick",'linkCkecherPreview("'+data.ImageUrl+'")');
+				}else {
+					
+				}
+				//activate linkButtons
+				
+				var buttonGen = "";
+				function returnToolTipContent(pURL, pTitle, pThumb, pRules) {
+				    
+				    if (pRules == "valid") {
+					    checkattr="<li>Link works correctly</li><li>URL is not blacklisted</li>";
+					    thumbimg = '<div class=\'loader\'><img src=\'/img/litmus/loader.gif\'  /></div>\<img src='+pThumb+' class=\'img-responsive mainthumb\' />';
+				    } else if (pRules == "warning") {
+					    checkattr="<li>Link does not work</li>";
+					    thumbimg ='<img src=\'/img/litmus/placeholder.png\' class=\'img-responsive placeholder\' />';
+				    } else if (pRules == "blacklisted") {
+					    checkattr="<li>Link is blacklisted</li>";
+					    thumbimg ='<img src=\'/img/litmus/placeholder.png\' class=\'img-responsive placeholder\' />';
+				    }
+				    
+				    var tooltipcontent = '\
+					<header>' + thumbimg + '<h3><a href='+pURL+' target=_blank>'+pURL+'</a></h3>\
+					</header>\
+					<div>\
+						<ul>\
+							'+checkattr+'\
+						</ul>\
+					</div>\
+					';
+					
+				    return tooltipcontent;
+				}
+				
+				$.each(data.Links,function(i,button){
+					if(button.IsValid) {
+						buttonGen += '<button type="button" class="linkCheckButtons btn-success " style="position:absolute;z-index:999; left:'+button.TopLeftX+'px; top:'+button.TopLeftY+'px;color:#fff;" data-html="true" data-toggle="popover" data-title="<i class=\'fa fa-check-circle\'></i>Link Check Successful" data-trigger="hover" data-template="<div class=\'popover off tooltip-success\' role=\'tooltip\'><div class=\'arrow\'></div><h3 class=\'popover-title\'></h3><div class=\'popover-content\'></div></div>" data-content="'+returnToolTipContent(button.Url, button.PageTitle, button.ThumbnailUri, "valid") +'">'+button.Url+'</button>';
+					}
+					if(button.Exception) {
+						buttonGen += '<button type="button" class="linkCheckButtons btn-danger" style="position:absolute;z-index:999; left:'+button.TopLeftX+'px; top:'+button.TopLeftY+'px;color:#fff;" data-html="true" data-toggle="popover" data-title="<i class=\'fa fa-exclamation-triangle\'></i>Link Check Failed" data-trigger="hover" data-template="<div class=\'popover off tooltip-failed\' role=\'tooltip\'><div class=\'arrow\'></div><h3 class=\'popover-title\'></h3><div class=\'popover-content\'></div></div>" data-content="'+returnToolTipContent(button.Url, button.PageTitle, button.ThumbnailUri, "warning") +'">'+button.Url+'</button>';
+						//buttonGen += '<button type="button" class="linkCheckButtons btn-warning" style="position:absolute;z-index:999; left:'+button.TopLeftX+'px; top:'+button.TopLeftY+'px;color:#fff;" onclick="showLinkCheckMoreInfoModal(\''+button.Exception+'\',\'Status: '+button.Exception+'\',\''+button.ThumbnailUri+'\')">'+button.Exception+'</button>';
+					}
+					if(button.IsBlackListed) {
+						buttonGen += '<button type="button" class="linkCheckButtons btn-danger" style="position:absolute;z-index:999; left:'+button.TopLeftX+'px; top:'+button.TopLeftY+'px;color:#fff;" data-html="true" data-toggle="popover" data-title="<i class=\'fa fa-exclamation-triangle\'></i>Link Check Failed" data-trigger="hover" data-template="<div class=\'popover off tooltip-blacklisted\' role=\'tooltip\'><div class=\'arrow\'></div><h3 class=\'popover-title\'></h3><div class=\'popover-content\'></div></div>" data-content="'+returnToolTipContent(button.Url, button.PageTitle, button.ThumbnailUri, "blacklisted") +'">'+button.Url+'</button>';
+					}
+					$('#linkButtonsAjax').html(buttonGen);
+					$('[data-toggle="popover"]').popover().on('shown.bs.popover', function () {
+					    
+					    
+					    $(this).parent().find('div.off .mainthumb').css("display","none");
+					    
+						$(this).parent().find('div.off .mainthumb').on('load', function(){
+						  // hide/remove the loading image
+						  $(this).prev('.loader').css("display","none");
+						  $(this).css("display","block");
+  				    	  $(this).parent().parent().parent().addClass("on");
+  						  $(this).parent().parent().parent().removeClass("off");
+						});
+					})
+
+
+
+
+				});
+			}else {
+				$('#linkProcessIcon').html("");
+			}
+		 },'json');
+	}
+			
+	function linkCkecherPreview(imageUrl){
+		var toScroll = $(".previewArea").offset().top;
+		var bodyScroll = $(window).scrollTop();
+		
+		$('.browserButtons').html('');
+		
+		if(bodyScroll > toScroll) {
+			$('html, body').animate({
+				scrollTop: toScroll - 30
+			}, 1000);
+		}
+		$('.clientTitle').html("Link Checker Preview");
+		$('.panel-body .imageContainer').html('<div class=""><img src="'+imageUrl+'" class="img-responsive center-block" /></div>');
+		$('.linkCheckButtons,#linkButtonsAjax').css({'display':'block'});
+		$('.imageContainerTop').css({'position':'relative'});
+		
+	}
+	
+
+
+</script>

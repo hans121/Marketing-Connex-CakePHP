@@ -1,0 +1,1 @@
+<?php echo $this->Form->input('required_amount',['value'=>$req_amount,'readOnly'=>true]);?>

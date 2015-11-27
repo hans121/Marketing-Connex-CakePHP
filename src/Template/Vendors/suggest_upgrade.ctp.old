@@ -1,0 +1,134 @@
+<div class="row payments clearfix">
+	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+		<h2><?=__('Upgrade to increase your partner limit');?></h2>
+	</div>
+	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	</div>
+</div>
+
+<?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+    
+<div class="vendors view col-centered col-lg-8 col-md-8 col-sm-8">
+
+  <fieldset class="well">
+  	<div class="row">
+  		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<h4><?= __('Current package details')?></h4>
+  		</div>
+  		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+      	<label><?php echo __('Package Name') ?></label>
+  		</div>
+  		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-7">
+      	<label><strong><?php echo $current_package['s']['name'] ?></strong></label>
+  		</div>
+  		<div class="clearfix"></div>
+  		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+	      <label><?php echo __('Package Type') ?></label>
+  		</div>
+  		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-7">
+	      <label><strong><?php echo ucwords($current_package['subscription_type']). __(' Subscription') ?></strong></label>
+  		</div>
+  		<div class="clearfix"></div>
+  		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+	      <label>
+	      	<?php 
+			      if($current_package['subscription_type'] == 'yearly'){
+			        $price = $this->Number->precision($current_package['s']['annual_price'], 2). ' '.__('/ Year');
+			      } else {
+			        $price = $this->Number->precision($current_package['s']['monthly_price'], 2). ' '.__('/ Month');
+			      }
+			      echo __('Price')
+		     ?>
+	     </label>
+  		</div>
+  		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-7">
+			  <label><strong><?php echo __('$ ').$price ?></strong></label>
+  		</div>
+  		<div class="clearfix"></div>
+  		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+	     <label><?php echo __('Partners')?></label>
+  		</div>
+  		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-7">
+	     <label><strong><?php echo $this->Number->precision($current_package['s']['no_partners'], 0) ?></strong></label>
+  		</div>
+  		<div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
+	     <label><?= $this->Html->link(__('Remove an existing partner'), ['controller' => 'Vendors', 'action' => 'Partners'],['class'=>'btn pull-right']); ?></label>
+  		</div>
+  		<div class="col-xs-12 visible-xs">
+	     <label><?= $this->Html->link(__('Remove an existing partner'), ['controller' => 'Vendors', 'action' => 'Partners'],['class'=>'btn pull-left']); ?></label>
+  		</div>
+  		<div class="clearfix"></div>
+  		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+				<label><?php echo __('Email send limit')?></label>
+  		</div>
+  		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-7">
+				<label><strong><?php echo $this->Number->precision($current_package['s']['no_emails'], 0).' / ',__('Month') ?></strong></label>
+  		</div>
+    </fieldset>
+    
+	<div class="row inner header-row ">
+	
+		<dt class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+			<strong><?= __('Next Package'); ?></strong>
+		</dt>
+		<dd class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+		
+			<div class="btn-group pull-right">
+				<?= $this->Form->postLink(__('Upgrade Now'), ['controller' => 'Vendors', 'action' => 'upgradeMyPackage',$package['id']], ['confirm' => __('Are you sure you want to upgrade ?',$package['id']),'class' => 'btn btn-primary pull-right']); ?>
+			</div>
+			
+		</dd>
+		
+	</div>
+
+  <div class="row inner">
+		<dt class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?= __('Package Name'); ?>
+		</dt>
+		<dd class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?= h($package['name']); ?>
+		</dd>
+  </div>
+
+  <div class="row inner">
+		<dt class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?= __('Package Price'); ?>
+		</dt>
+		<dd class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?php
+				if($package['vendor_subscription_type'] == 'monthly'){
+			?>
+				<?= __('$ ').$this->Number->precision($package['monthly_price'], 2). ' '.__('/ Month'); ?>
+			<?php
+				} else {
+			?>
+				<?= __('$ ').$this->Number->precision($package['annual_price'], 2). ' '.__('/ Year'); ?>
+			<?php
+				}
+			?>
+		</dd>
+  </div>
+
+  <div class="row inner">
+		<dt class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?= __('Partners'); ?>
+		</dt>
+		<dd class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?= $this->Number->precision($package['no_partners'], 0); ?>
+		</dd>
+  </div>
+
+  <div class="row inner">
+		<dt class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?= __('Email send limit'); ?>
+		</dt>
+		<dd class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?= $this->Number->precision($package['no_emails'], 0).' / ',__('Month'); ?>
+		</dd>
+  </div>
+
+</div>
+
+
+
+</div>

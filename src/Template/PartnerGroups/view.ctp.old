@@ -1,0 +1,198 @@
+<div class="partnerGroups view">
+
+	<div class="row index table-title vendor-table-title">
+
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<h2><?= __('Partner Group'); ?>
+				<small><?= $this->Html->link(__('See all'), ['controller' => 'PartnerGroups', 'action' => 'index']); ?></small>
+			</h2>
+			<div class="breadcrumbs">
+				<?php
+					$this->Html->addCrumb('Partners', ['controller' => 'vendors', 'action' => 'partners']);
+					$this->Html->addCrumb('Partner groups', ['controller' => 'PartnerGroups', 'action' => 'index']);
+					$this->Html->addCrumb('view', ['controller' => 'PartnerGroups', 'action' => 'view', $partnerGroup->id]);
+					echo $this->Html->getCrumbs(' / ', [
+					    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+					    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+					    'escape' => false
+					]);
+				?>
+			</div>
+		</div>
+		
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	    <?= $this->Html->link(__('Add new'), ['controller' => 'PartnerGroups','action' => 'add'],['class'=>'btn btn-lg pull-right']); ?>
+		</div>
+		
+	</div> <!--row-table-title-->
+	
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+  
+	<div class="row inner header-row ">
+	
+		<dt class="col-lg-9 col-md-8 col-sm-6 col-xs-4">
+			<strong><?= h($partnerGroup->name); ?></strong>
+		</dt>
+		
+		<dd class="col-lg-3 col-md-4 col-sm-6 col-xs-8">
+			<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $partnerGroup->id], ['confirm' => __('Are you sure you want to delete?', $partnerGroup->id),'class' => 'btn btn-danger pull-right']); ?>
+			<?= $this->Html->link(__('Edit'), ['action' => 'edit', $partnerGroup->id],['class' => 'btn pull-right']); ?>
+		</dd>
+		
+	</div>
+
+	<div class="row inner">   
+    <dt class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    	<?= __('Vendor'); ?>
+    </dt>
+		<dd class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			<?= $this->Html->link($partnerGroup['vendor']->company_name, ['controller' => 'Vendors', 'action' => 'view', $partnerGroup->vendor->id]); ?>
+		</dd>
+	</div>
+
+	<div class="row related">
+		<div class="col-lg-9 col-md-8 col-sm-6 col-xs-8">
+			<h3><?= __('Related Partners'); ?></h3>
+		</div>
+		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-4">
+			<?= $this->Html->link(__('Add new'), ['controller' => 'Vendors', 'action' => 'addPartner'],['class'=>'btn btn-lg pull-right']); ?>
+		</div>	
+	</div>
+
+	<?php if ($partnerGroupMembers->count()>0): ?>
+        
+	
+	<div class="row table-th hidden-xs">	
+		<div class="col-lg-1 col-md-1 col-sm-1">
+			<?= __('Logo'); ?>
+		</div>                   
+		<div class="col-lg-2 col-md-2 col-sm-2">
+			<?= __('Company Name'); ?>
+		</div>		
+		
+		<div class="col-lg-2 col-md-2 col-sm-2">
+			<?= __('Phone'); ?>
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-2">
+			<?= __('Website'); ?>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-3">
+      <?= __('E-mail'); ?>
+		</div>
+	</div>
+	
+	<?php 
+    $j = 0;
+    foreach ($partnerGroupMembers as $member): $j++;
+    $partners = $member->partner;
+  ?>
+
+	<div class="row inner hidden-xs">
+		<div class="col-lg-4 col-md-4 col-sm-4">
+			<?= h($partners->company_name) ?>
+	    <?php if(trim($partners->logo_url) != ''){ ?>	    
+
+				<a data-toggle="popover" data-html="true" data-content='<?= $this->Html->image('logos/'.$partners->logo_url)?>'>
+					<i class="fa fa-info-circle"></i>
+				</a>
+
+	    <?php } ?>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-4">
+			<?php 
+				if (h($partners->website)!='') {
+			?>
+			<?= $this->Html->link(h($partners->website), h($partners->website),['target' => '_blank']); ?> <i class="fa fa-external-link"></i>
+			<?php
+				}
+			?>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-4">
+			<div class="btn-group pull-right">
+				<?= $this->Html->link(__('View'), ['controller' => 'Vendors', 'action' => 'viewPartner', $partners->id],['class'=>'btn']); ?>
+				<?= $this->Html->link(__('Edit'), ['controller' => 'Vendors', 'action' => 'editPartner', $partners->id],['class'=>'btn']); ?>
+			</div>
+		</div>
+	</div>
+
+	<!-- For mobile view only -->
+	<div class="row inner visible-xs">
+	
+		<div class="col-xs-12 text-center">
+			<a data-toggle="collapse" data-parent="#accordion" href="#coupons-<?=$j?>">
+				<h3><?= h($partners->company_name) ?></h3>
+			</a>						
+		</div>
+					
+		<div id="coupons-<?=$j?>" class="col-xs-12 panel-collapse collapse">
+		
+			<div class="row inner">
+				<div class="col-xs-6">
+					<?= __('logo'); ?>
+				</div>
+				<div class="col-xs-6">
+			    <?php if(trim($partners->logo_url) != ''){ ?>	    
+						<div class="image-preview">
+							<?= $this->Html->image('logos/'.$partners->logo_url)?>
+				    	<div><?= $this->Html->image('logos/'.$$partners->logo_url)?></div>
+				    </div>
+			    <?php } ?>
+				</div>
+			</div>
+			
+			<div class="row inner">
+				<div class="col-xs-6">
+					<?= __('Phone'); ?>
+				</div>
+				<div class="col-xs-6">
+					<?= h($partners->phone) ?>
+				</div>
+			</div>
+			
+			<div class="row inner">
+				<div class="col-xs-6">
+					<?= __('Fax'); ?>
+				</div>
+				<div class="col-xs-6">
+					<?= h($partners->fax) ?>
+				</div>
+			</div>
+			<div class="row inner">
+				<div class="col-xs-6">
+					<?= __('Website'); ?>
+				</div>
+				<div class="col-xs-6">
+					<?= h($partners->website) ?>
+				</div>
+			</div>
+			<div class="row inner">
+				<div class="col-xs-6">
+					<?= __('E-mail'); ?>
+				</div>
+				<div class="col-xs-6">
+					<?= h($partners->email) ?>
+				</div>
+			</div>
+                   
+		
+		</div> <!-- /.collapse -->				
+				
+	</div> <!-- /.row -->
+	
+	
+	<?php endforeach; ?>
+
+	<?php else:?>
+	
+	
+	<div class="row inner withtop">
+		<div class="col-sm-12 text-center">
+			<?= __('No related partners found') ?>
+		</div>
+	</div>
+		
+		
+	<?php endif;?>
+
+
+</div>

@@ -1,0 +1,44 @@
+<div class="partnerManagers form col-centered col-lg-10 col-md-10 col-sm-10">
+  
+  <?php echo $this->Form->create($user,['class'=>'validatedForm']) ?>
+
+  	<h2><?= __('New Manager')?></h2>
+  	
+  	<div class="breadcrumbs">
+  		<?php
+  			$this->Html->addCrumb('Managers', ['controller' => 'PartnerManagers', 'action' => 'index']);
+  			$this->Html->addCrumb('add', ['controller' => 'PartnerManagers', 'action' => 'add']);
+  			echo $this->Html->getCrumbs(' / ', [
+  			    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+  			    'url' => ['controller' => 'Partners', 'action' => 'index'],
+  			    'escape' => false
+  			]);
+  		?>
+  	</div>
+      
+    <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+  
+    <fieldset>
+
+
+     
+      <?php
+        echo $this->element('title-form');
+    		echo $this->Form->input('first_name',['label'=>'First Name(s)']);
+    		echo $this->Form->input('last_name');
+        echo $this->Form->input('job_title');	
+    		echo $this->Form->input('phone');
+    		echo $this->Form->input('email');
+    		echo $this->Form->input('password');
+        echo $this->Form->input('conf_password',['label'=>'Confirm Password', 'type' => 'password']);
+    		echo $this->Form->hidden('status',['value' =>'Y']);
+    		echo $this->Form->hidden('role',['value' =>'partner']);
+        echo $this->Form->hidden('partner_manager.partner_id',['value'=>$partner_id]);
+        echo $this->Form->hidden('partner_manager.primary_contact',['value' => 'N']);
+      ?>
+  
+    </fieldset>
+  
+  <?= $this->Form->end(); ?>
+    
+</div>

@@ -1,0 +1,394 @@
+.timeline {
+	position: relative;
+	margin-top: 80px;	
+}
+
+.timelineFlat {
+	display:none;
+}
+.timelineLoader {
+	width:100%;
+	text-align:center;
+	padding:150px 0;
+}
+
+
+/* fixed line holder */
+.timelineFlat .timeline_line {
+	margin-top:10px;
+	margin-bottom:10px;
+	width:900px;
+}
+
+/* full (including months that are not shown) line holder */
+.timelineFlat .t_line_holder {
+	height:80px;
+	padding-left: 2px;
+	padding-right: 2px;
+	background:url(../img/timeline/light/line.jpg) repeat-x 0px 39px;
+}
+
+/* 2 months are stored in one view */
+.timelineFlat .t_line_view {
+	height:20px;
+	width:900px;
+}
+
+
+
+/* holder for 1 month (constist of nodes and month caption) - we use borders to separate months thats why it has width 2px less then 50% */
+.timelineFlat .t_line_m {
+	margin-top:30px;
+	height:19px;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+	width:448px;
+}
+
+/* month on the right side - has left set at 459 so border would overlap border from first element (to evade duplicated borders) */
+.timelineFlat .t_line_m.right {
+	left:449px;
+	width:449px;
+}
+
+/* month caption */
+.timelineFlat h4.t_line_month {
+	margin:-30px 0 0;
+	color:#545454;
+}
+
+
+/* node on the timeline */
+.timelineFlat a.t_line_node {
+	text-decoration:none;
+	padding:38px 0 4px;
+	height:10px;
+	font-size:12px;
+	top:-21px;
+	background:url(../img/timeline/light/dot.png) no-repeat center 24px;
+	color:#141817;
+}
+.timelineFlat a.t_line_node:hover {
+	background:url(../img/timeline/light/dot-rollover.png) no-repeat center 24px;
+}
+.timelineFlat a.t_line_node.active {
+	background:url(../img/timeline/light/dot-selected.png) no-repeat center 24px;
+}
+
+/* node description */
+.timelineFlat .t_node_desc {
+	background: #999999;
+	top:0;
+	color:#fff;
+	padding:1px 5px;
+}
+.timelineFlat .t_line_node.active .t_node_desc {
+	background: #AD0061;
+	top:0;
+	color:#fff;
+	padding:1px 5px;
+}
+
+/* descriptions on right side go from right to left */
+.timelineFlat .t_line_m.right .t_node_desc {
+	right:0;
+}
+
+/* line arrow left */
+.timelineFlat #t_line_left {
+	cursor:pointer;
+	left:-30px;
+	top:30px;
+	width:14px;
+	height:19px;
+	background:url(../img/timeline/light/arrow.png) no-repeat left top;
+}
+
+.timelineFlat #t_line_left:hover {
+	background:url(../img/timeline/light/arrow.png) no-repeat left bottom;
+}
+
+/* line arrow right */
+.timelineFlat #t_line_right {
+	cursor:pointer;
+	right:-30px;
+	top:30px;
+	width:14px;
+	height:19px;
+	background:url(../img/timeline/light/arrow.png) no-repeat right top;
+}
+
+.timelineFlat #t_line_right:hover {
+	background:url(../img/timeline/light/arrow.png) no-repeat right bottom;
+}
+.timelineFlat {
+	display:none;
+}
+
+/* items container */
+.timelineFlat .timeline_items {
+	padding:10px 0;
+}
+
+/* single item (margines set from javascript) */
+.timelineFlat .item {
+	height:175px;
+	text-align:left;
+	background:#ffffff; 
+	color:#545454;
+	width:285px;
+	padding: 20px;
+	border:1px solid #cccccc;
+	-webkit-transition: all 0.25s ease-in-out;
+	   -moz-transition: all 0.25s ease-in-out;
+	    -ms-transition: all 0.25s ease-in-out;
+	     -o-transition: all 0.25s ease-in-out;
+			 		transition: all 0.25s ease-in-out;
+}
+.timelineFlat .item:hover,
+.timelineFlat .item.item_node_hover {
+	background:#ffffff;
+	   -moz-transition-duration:0.5s;
+	-webkit-transition-duration:0.5s;
+	    -ms-transition-duration:0.5s;
+					transition-duration:0.5s;
+		 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	    -ms-box-shadow:none;
+					box-shadow:none;
+	background-color: rgba(255,255,255,1) !important;
+	outline:0;
+	outline:thin dotted \9;
+	border-color: #ffffff;
+	-webkit-box-shadow:0 0 8px rgba(173,0,97,.6);
+					box-shadow:0 0 8px rgba(173,0,97,.6);
+	   -moz-transform: scale(1.025);
+	-webkit-transform: scale(1.025);
+	     -o-transform: scale(1.025);
+	    -ms-transform: scale(1.025);
+					transform: scale(1.025);
+}
+/* ----- content - non-plugin elements ----- */
+.timelineFlat .item img {
+	margin-top:0;
+	/*width:200px;*/
+}
+
+.timelineFlat .con_borderImage {
+	border-bottom:5px solid #1a86ac;
+}
+
+.timelineFlat .item span{
+	display:block;
+	margin:0px 20px 10px;
+	height:175px;
+}
+.timelineFlat .item .read_more {
+	cursor:pointer;
+}
+.timelineFlat .item .read_more:hover {
+	text-decoration: underline;
+}
+/* ----------------------------------------- */
+
+/* item details (margines set from javascript) */
+.timelineFlat .item_open {
+	height:175px;
+	background:#ededed;
+	position:relative;
+	color:#545454;
+	z-index:2; 
+	width:250px;
+	border:1px solid #cccccc;
+}
+
+/* item details content wrapper (used for animation - shuld have same width as .item_open) */
+.timelineFlat .item_open_cwrapper {
+	width:250px;
+	height:100%;
+	padding: 20px;
+}
+
+.timelineFlat .item_open_content {
+	width:100%;
+	height:100%;
+	position:relative;
+}
+
+.timelineFlat .item_open_content .ajaxloader {
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin:-10px 0 0 -100px;
+	
+}
+
+/* ----- content - non-plugin elements ----- */
+.timelineFlat .timeline_open_content {
+	padding:20px;
+}
+
+.timelineFlat .item_open h2 {
+	margin-top:10px;
+	padding-top:0;
+	font-size:28px;
+}
+.timelineFlat .item_open .t_close {
+	position:absolute;
+	top:10px;
+	right:10px;
+	padding:2px 0 4px 0;
+	font-size:14px;
+	color:#666666;
+	cursor:pointer;
+	z-index:2;
+}
+.timelineFlat .item_open .t_close:hover {
+	color: #AD0061;
+}
+/* ----------------------------------------- */
+
+
+/* left/right controles */
+.timelineFlat .t_controles {
+	margin:0;
+}
+
+.timelineTouch.timelineFlat .t_left,
+.timelineTouch.timelineFlat .t_right {
+	display: none;
+}
+
+.timelineFlat:hover .t_left,
+.timelineFlat:hover .t_right {
+	opacity: 1;
+	filter: alpha(opacity=100);	
+}
+
+.timelineFlat .t_left,
+.timelineFlat .t_right {
+	position: absolute;
+	display:block;
+	height:100%;
+	width:75px;
+	margin:0;
+	cursor:pointer;
+	top:0;
+	z-index: 10;
+	opacity: 0;
+	filter: alpha(opacity=0);	
+	transition:background-color 300ms, opacity 300ms;
+	-webkit-transition: background-color 300ms, opacity 300ms;
+	-moz-transition: background-color 300ms, opacity 300ms;
+}
+.timelineFlat .t_left,  
+.timelineFlat .t_left:hover:active {
+	left:0;
+	background: rgba(255,255,255, 0.5) url(../img/timeline/clean/blck-arrow-left.png) no-repeat center center;
+}
+.timelineFlat .t_left:hover {
+	background: rgba(255,255,255, 0.7) url(../img/timeline/clean/blck-arrow-left.png) no-repeat center center;
+}
+
+.timelineFlat .t_right, 
+.timelineFlat .t_right:hover:active{
+	right:0;
+	background: rgba(255,255,255, 0.5) url(../img/timeline/clean/blck-arrow-right.png) no-repeat center center;
+}
+
+.timelineFlat .t_right:hover {
+	background: rgba(255,255,255, 0.7) url(../img/timeline/clean/blck-arrow-right.png) no-repeat center center;
+}
+
+
+/* -----------------------------------------------------------------------*/
+/* ------------------------------ RESPONSIVE -----------------------------*/
+/* -----------------------------------------------------------------------*/
+
+
+
+/* --- 768px --- */
+@media screen and (max-width:980px) {
+	
+	.timelineFlat .timeline_line {
+		width:680px;
+	}
+	
+	.timelineFlat .t_line_view {
+		width:680px;
+	}
+	
+	.timelineFlat .t_line_m {
+		width: 338px;
+	}
+	.timelineFlat .t_line_m.right {
+		left: 339px;
+		width: 339px;
+	}
+}
+
+
+/* --- 610px --- */
+@media screen and (max-width:767px) {
+	
+	.timelineFlat .timeline_line {
+		width:530px;
+	}
+	
+	.timelineFlat .t_line_view {
+		width:1060px;
+	}
+	
+	.timelineFlat .t_line_m {
+		width: 528px;
+	}
+	.timelineFlat .t_line_m.right {
+		left: 530px;
+		width: 528px;
+	}
+	
+	.timelineFlat .t_line_node span {
+		
+	}
+	.timelineFlat .t_node_desc {
+		font-size:8px;
+	}
+	.timelineFlat .t_line_m.right .t_node_desc {
+		right:auto;
+		left:0;
+	}
+}
+
+
+/* --- 300px --- */
+@media screen and (max-width:609px) {
+	.timelineFlat .timeline_line {
+		width:240px;
+	}
+	
+	.timelineFlat .t_line_view {
+		width:480px;
+	}
+	
+	.timelineFlat .t_line_m {
+		width: 238px;
+	}
+	.timelineFlat .t_line_m.right {
+		left: 240px;
+		width: 238px;
+	}
+	
+	.timelineFlat .item_open {
+		width:280px;
+		height:390px;
+	}
+	.timelineFlat .item_open img {
+		max-width:280px;
+	} 
+	.timelineFlat .item_open_cwrapper {
+		width:280px;
+	}
+}
+
+
+

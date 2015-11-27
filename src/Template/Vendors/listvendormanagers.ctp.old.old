@@ -1,0 +1,148 @@
+<?php
+    $this->layout = 'admin';
+?>
+
+<div class="vendorManagers index">
+
+	<div class="index row table-title vendor-table-title">
+	
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			
+			<h2>
+				<?= __('Managers'); ?>
+			</h2>
+			
+			<div class="breadcrumbs">
+				<?php
+					$this->Html->addCrumb('Managers', ['controller' => 'vendors', 'action' => 'listvendormanagers']);
+					echo $this->Html->getCrumbs(' / ', [
+					    'text' => $this->Html->tag('span',__('',false),['class' => 'fa fa-home']),
+					    'url' => ['controller' => 'Vendors', 'action' => 'index'],
+					    'escape' => false
+					]);
+				?>
+			</div>
+			
+		</div>
+
+				
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<?= $this->Html->link(__('Add new'), ['action' => 'addVendorManager'],['class'=>'btn btn-lg pull-right']); ?>
+		</div>
+				
+	</div> <!--row-table-title-->
+	
+  <?php echo $this->Flash->render(); echo $this->Flash->render('auth'); ?>
+    
+	<div class="row table-th hidden-xs">	
+		<div class="col-lg-5 col-md-5 col-sm-3 col-xs-3">
+			<?= $this->Paginator->sort('user_id','Name'); ?>
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-center">
+			<?= $this->Paginator->sort('primary_manager','Primary Manager'); ?>
+		</div>
+		<div class="col-lg-5 col-md-5 col-sm-7 col-xs-5">
+		</div>
+		
+	</div> <!-- /.row -->
+		
+	<?php 
+     $j =0;
+         $auth =   $this->Session->read('Auth');
+         $auth_vendor_primary   =   $auth['User']['primary_manager'];
+        foreach ($vendorManagers as $vendorManager): 
+        $j++;
+                ?>
+	<!-- Start loop -->
+		<div class="row inner hidden-xs">
+			<div class="col-lg-5 col-md-5 col-sm-3 col-xs-3">
+				<?= h($vendorManager->user->full_name); ?>
+			</div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-center">
+				<?php
+					if($vendorManager->primary_manager == 'Y'){ ?>
+		      	<span class="glyphicon glyphicon-ok"></span><?php
+		      }
+		    ?>
+			</div>
+			<div class="col-lg-5 col-md-5 col-sm-7 col-xs-5">
+				<div class="btn-group pull-right">
+					<?= $this->Html->link(__('Edit'), ['action' => 'editManager', $vendorManager->id],['class' => 'btn pull-right']); ?>
+					<?= $this->Html->link(__('View'), ['action' => 'viewManager', $vendorManager->id],['class' => 'btn pull-right']); ?>
+					<?php 
+					if($auth_vendor_primary == 'Y' && $vendorManager->user_id != $auth['User']['id']){
+					   echo $this->Form->postLink(__('Delete'), ['action' => 'deleteVendorManager', $vendorManager->id], ['confirm' => __('Are you sure you want to delete?', $vendorManager->id),'class' => 'btn btn-danger pull-right']);
+					}?>
+					<?php 
+					if($auth_vendor_primary == 'Y' && $vendorManager->primary_manager != 'Y'){
+			        echo $this->Form->postLink(__('Make Primary'), ['controller' => 'Vendors', 'action' => 'changePrimaryVmanager', $vendorManager->id], ['confirm' => __('Are you sure you want to change the Primary Vendor Manager?', $vendorManager->id),'class' => 'btn pull-right']);
+					}?>
+				</div>
+			</div>	
+		</div> <!--row-->
+							
+		<!-- For mobile view only -->
+		<div class="row inner visible-xs">
+		
+			<div class="col-xs-12 text-center">
+				
+				<a data-toggle="collapse" data-parent="#accordion" href="#basic<?= $j ?>">
+				
+					<h3><?= $vendorManager->user->full_name; ?></h3>
+					
+				</a>
+				
+			</div> <!--col-->
+				
+			<div id="basic<?= $j ?>" class="col-xs-12 panel-collapse collapse">
+			
+				<div class="row inner">
+					<div class="col-xs-5">
+						<?= __('Name')?>
+					</div>
+					<div class="col-xs-7">
+						<?= $vendorManager->user->full_name; ?>
+					</div>
+				</div>
+
+				<div class="row inner">
+					<div class="col-xs-5">
+						<?= __('Primary Manager')?>
+					</div>
+					<div class="col-xs-7">
+						<?php
+							if($vendorManager->primary_manager == 'Y'){ ?>
+				      	<span class="glyphicon glyphicon-ok"></span><?php
+				      }
+				    ?>
+					</div>
+				</div>
+
+				<div class="row inner">
+					<div class="col-xs-12">
+						<div class="btn-group pull-right">
+							<?= $this->Html->link(__('View'), ['action' => 'viewManager', $vendorManager->id],['class' => 'btn pull-right']); ?>
+							<?= $this->Html->link(__('Edit'), ['action' => 'editManager', $vendorManager->id],['class' => 'btn pull-right']); ?>
+							<?php 
+							if($auth_vendor_primary == 'Y' && $vendorManager->user_id != $auth['User']['id']){
+							   echo $this->Form->postLink(__('Delete'), ['action' => 'deleteVendorManager', $vendorManager->id], ['confirm' => __('Are you sure you want to delete?', $vendorManager->id),'class' => 'btn btn-danger pull-right']);
+							}?>
+							<?php 
+							if($auth_vendor_primary == 'Y' && $vendorManager->primary_manager != 'Y'){
+					        echo $this->Form->postLink(__('Make Primary'), ['controller' => 'Vendors', 'action' => 'changePrimaryVmanager', $vendorManager->id], ['confirm' => __('Are you sure you want to change the Primary Vendor Manager?', $vendorManager->id),'class' => 'btn pull-right']);
+							}?>
+						</div>
+					</div>
+				</div>
+							
+			</div> <!-- /.collapse -->
+			
+		</div> <!-- /.row -->
+			
+	<?php endforeach; ?>
+
+	<?php echo $this->element('paginator'); ?>
+	
+	</div><!--row table-th-->
+	
+</div> <!-- index?-->

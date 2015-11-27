@@ -1,0 +1,43 @@
+
+<div class="mainContent welcome" ng-controller="welcomeCtrl">
+    <ng-include src="'Client/app/components/core/header/headerView.html'"></ng-include>
+    <div ng-init="initTemplate()">
+        <div class="container welcome">
+            <div class="row" ng-show="hasTemplateSaved" >
+                <div class="text-center rounded welcomeBox">
+	                <h3><span>Welcome back!</span> Nice to see you again | <a ng-click="continueEditingYourLastMessage()">Continue editing your last message?</a></h3>
+	            </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 text-center">
+	                <h1>Rich email messages made easy</h1>
+                    <h2>Choose a template</h2>
+               	</div>
+            </div>
+            
+             <!-- template selectors -->
+            <div class="row">
+            	<ul class="center-block btnChooseBox">
+                	<li><a href="#" class="btn btn-default" ng-class="group1Status" ng-click="onGroupSelected('1')">Rich templates</a></li>
+					<li><a href="#" class="btn btn-default" ng-class="group2Status" ng-click="onGroupSelected('2')">Basic templates</a></li>
+                </ul>
+            </div>
+            <div class="row center-block templateBox" ng-hide="">
+                <div ng-repeat="template in templatesGroup | filter:{group:selectedGroup}" class="col-xs-6 col-sm-3">
+                    <div class="templateItem text-center rounded">
+                        <a ng-click="templateSelected(template.id)" class="templateItemImg">
+                            <img ng-src="{{template.thumbnail}}" ng-class="{true:'imgselected', false:''}[template.isSelected]" />
+                            <div class="templateItemTxt">
+                                {{template.title}}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+			<div class="row text-center">
+            	<h3>Looking for the previous version? <a href="https://v1.beefree.io" target="_blank">Roll back to BEE v1.</a></h3>
+            </div>
+            <div class="row lastrow">&nbsp;</div>
+        </div>
+    </div>
+</div>
